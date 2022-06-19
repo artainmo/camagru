@@ -46,8 +46,15 @@ class ManageDatabase {
 	}
 
 	function createAccount($username, $password, $email) {
+		$encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
 		return $this->execSqlParams("INSERT INTO account (username, password, email) VALUES (?, ?, ?);", 
-							[$username, $password, $email]);
+							[$username, $encryptedPassword, $email]);
+	}
+
+	function verifyPasswordAccount($username, $passwordTry) {
+		$user = $this->getAccount($username);
+		if (count($user) === 0) { return false; }
+		return password_verify($passwordTry, $user[0]->password);
 	}
 
 	function getAccount($username) {
