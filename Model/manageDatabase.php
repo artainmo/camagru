@@ -62,6 +62,9 @@ class ManageDatabase {
 	}
 
 	function updateAccount($username, $columnToUpdate, $newValue) {
+		if ($columnToUpdate === "password") {
+			$newValue = password_hash($newValue, PASSWORD_DEFAULT);
+		}
 		return $this->execSqlParams("UPDATE account SET ${columnToUpdate} = ?
           WHERE username = ?;", [$newValue, $username]);
 	}
