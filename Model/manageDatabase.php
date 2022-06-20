@@ -42,7 +42,9 @@ class ManageDatabase {
 			$prep = $this->db->prepare($query);
 			$prep->execute($params);
 			return $prep->fetchAll();
-		} catch (PDOException $e) { return "Error sql command: " . $e->getMessage(); }
+		} catch (PDOException $e) { 
+			return [false, $e->getMessage()];
+		}
 	}
 
 	function createAccount($username, $password, $email) {
