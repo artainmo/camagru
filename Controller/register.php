@@ -1,4 +1,6 @@
 <?php
+	session_start();
+
 	if (isset($_POST['register'])) {	
 		$name = htmlspecialchars(trim($_POST['name']));
 		$email = htmlspecialchars(trim($_POST['email']));
@@ -19,6 +21,9 @@
 				if (substr($ret[1], 0, 15) === "SQLSTATE[23505]") {
 					$nameAlert = "Name already in use.";
 				} else { $error = "Internal server error occured:<br/>" . $ret[1]; }
+			} else {
+				$_SESSION['account'] = $name;
+				header('Location: http://localhost:8000/profile.php');
 			}
 		}
 	}

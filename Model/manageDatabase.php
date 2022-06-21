@@ -20,7 +20,7 @@ class ManageDatabase {
 		//Connect to database
 		try {
 			$this->db = new PDO("pgsql:host=" . $DB_HOST . ";dbname=" . $DB_NAME, $DB_USER, $DB_PASSWORD, $DB_OBJ_OPTIONS);
-			echo "Connection successful\n";
+			//echo "Connection successful\n";
 		} catch (PDOException $e) {
     		echo "Connection failed:\n" . $e->getMessage();
 		}
@@ -29,10 +29,10 @@ class ManageDatabase {
 		$create_db_commands = file_get_contents(__DIR__ . "/designDatabase.sql");
 		try {
 			$this->db->exec($create_db_commands);
-			echo "Database created\n";
+			//echo "Database created\n";
 		} catch (PDOException $e) {
 			if (substr($e->getMessage(), 0, 15) === "SQLSTATE[42P07]") {
-				echo "Database already exists\n";
+				//echo "Database already exists\n";
 			} else { echo "Error creating database:\n" . $e->getMessage(); }
 		}	
 	}

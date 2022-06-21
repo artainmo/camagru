@@ -1,4 +1,6 @@
 <?php
+	session_start();
+
 	if (isset($_POST['login'])) {	
 		$name = htmlspecialchars(trim($_POST['name']));
 		$password = htmlspecialchars(trim($_POST['password']));
@@ -8,7 +10,8 @@
 		if (!$db->verifyPasswordAccount($name, $password)) {
 			$error = "Wrong name or password.";
 		} else {
-			echo "Login successful.";
+			$_SESSION['account'] = $name;
+			header('Location: http://localhost:8000/profile.php');
 		}
 	}
 ?>

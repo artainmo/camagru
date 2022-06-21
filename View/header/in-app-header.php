@@ -4,7 +4,7 @@
 	<ul>
 		<li><a href="picture-editing.php">Create</a></li>
 		<li><a href="picture-gallery.php">See</a></li>
-		<li><a href="profile-settings.php">Settings</a></li>
-		<li><a href="index.php">Logout</a></li>
+		<li><a href="profile.php">Profile</a></li>
+		<li><a href="logout.php">Logout</a></li>
 	</ul>
 <nav>
