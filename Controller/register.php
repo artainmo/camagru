@@ -24,7 +24,7 @@
 	}
 ?>
 
-<?php require(__DIR__ . "/../View/base-header.html"); ?>
+<?php require(__DIR__ . "/../View/header/connect-app-header.php"); ?>
 
 <h3>Register</h3>
 <form action="register.php" method="POST">
@@ -41,4 +41,4 @@
 	<?php if (isset($error)) {echo $error . "<br/>";} ?><br/>
 </form>
 
-<?php require(__DIR__ . "/../View/footer.html"); ?>
+<?php require(__DIR__ . "/../View/footer/footer.html"); ?>

@@ -3,4 +3,6 @@
 ?>
 
 
-<!-- Create in HTML links towards registration or login pages -->
+<?php require(__DIR__ . "/../View/header/connect-app-header.php"); ?>
+
+<?php require(__DIR__ . "/../View/footer/footer.html"); ?>
