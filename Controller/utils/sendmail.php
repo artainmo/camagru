@@ -39,4 +39,4 @@ function sendMail($toMail, $toName, $subject, $content) {
 	}
 }
 
-//Example -> echo sendmail("tainmontarthur@icloud.com", "tainmont arthur", "Test", "Test");
+//Example -> echo sendMail("tainmontarthur@icloud.com", "tainmont arthur", "Test", "Test");

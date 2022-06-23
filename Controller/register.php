@@ -1,13 +1,13 @@
 <?php
-	session_start();
-
 	if (isset($_POST['register'])) {	
 		$name = htmlspecialchars(trim($_POST['name']));
 		$email = htmlspecialchars(trim($_POST['email']));
 		$email = filter_var($email, FILTER_SANITIZE_EMAIL);
 		$password = htmlspecialchars(trim($_POST['password']));
 
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		if (str_contains($name, ' ')) {
+			$nameAlert = "Username cannot contain spaces.";
+		} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$emailAlert = "Not a valid email.";	
 		} elseif (!preg_match('~[0-9]+~', $password) || !preg_match('~[a-z]+~', $password) 
 			|| strlen($password) < 5) {
@@ -16,14 +16,21 @@
 		} else {	
 			require(__DIR__ . "/../Model/manageDatabase.php");
 			$db = new ManageDatabase;
-			$ret = $db->createAccount($name, $password, $email);
-			if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
-				if (substr($ret[1], 0, 15) === "SQLSTATE[23505]") {
-					$nameAlert = "Name already in use.";
-				} else { $error = "Internal server error occured:<br/>" . $ret[1]; }
+			$ret = $db->getAccount($name);
+			if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
+				$error = "Internal server error occured:<br/>" . $ret[1]; 
+			} elseif (count($ret) !== 0) {
+				$nameAlert = "Name already in use.";
 			} else {
-				$_SESSION['account'] = $name;
-				header('Location: http://localhost:8000/profile.php');
+				require(__DIR__ . "/utils/crypting.php");
+				$token = encrypt_decrypt("name=${name}&email=${email}&password=${password}");
+				require(__DIR__ . "/utils/sendmail.php");
+				sendMail($email, $name, "Verify Camagru Account", 
+					"Click on the following button to verify your account: " .
+					"<button><a href=" .
+					"'http://localhost:8000/emailVerification.php?${token}'" .
+					">Verify</a></button>");
+				header("Location: http://localhost:8000/emailVerification.php");
 			}
 		}
 	}
@@ -33,7 +40,7 @@
 
 <h3>Register</h3>
 <form action="register.php" method="POST">
-	<label>Name</label><br/>
+	<label>Username</label><br/>
 	<input type="text" name="name" maxlength="20" required/><br/>
 	<?php if (isset($nameAlert)) {echo $nameAlert . "<br/>";} ?><br/>
 	<label>Email</label><br/>
