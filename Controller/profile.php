@@ -6,7 +6,12 @@
     if (isset($_POST['nameSubmit'])) {
 		$name = htmlspecialchars(trim($_POST['nameInput']));
 
-
+		$ret = $db->updateAccount($_SESSION['account'], "username", $name);
+		if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
+        	if (substr($ret[1], 0, 15) === "SQLSTATE[23505]") {
+		    	$nameAlert = "Name already in use.";
+			} else { $error = "Internal server error occured:<br/>" . $ret[1]; }
+		} else { $_SESSION['account'] = $name; }
 	}
 	if (isset($_POST['emailSubmit'])) {
 		$email = htmlspecialchars(trim($_POST['emailInput']));
@@ -15,7 +20,10 @@
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $emailAlert = "Not a valid email.";
 		} else {
-			$db->updateAccount($_SESSION['account'], "email", $email);		
+			$ret = $db->updateAccount($_SESSION['account'], "email", $email);		
+			if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
+				$error = "Internal server error occured:<br/>" . $ret[1]; 
+			}
 		}
 	}
 	if (isset($_POST['passwordSubmit'])) {
@@ -26,7 +34,10 @@
             $passwordAlert = "Password must have a minimal length of 5 characters,
                 contain at least one number and lower case character.";
         } else {	
-			$db->updateAccount($_SESSION['account'], "password", $password);		
+			$ret = $db->updateAccount($_SESSION['account'], "password", $password);		
+			if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
+				$error = "Internal server error occured:<br/>" . $ret[1]; 
+			}
 		}
 	}
 ?>
@@ -59,7 +70,8 @@
     <label>Change password</label>
     <input type="password" name="passwordInput" maxlength="20" required/>
 	<button type="submit" name="passwordSubmit">submit</Button><br/>
-	<?php if (isset($passwordAlert)) {echo $passwordAlert . "<br/>";} ?><br/>
+	<?php if (isset($passwordAlert)) {echo $passwordAlert . "<br/>";} ?><br/><br/>
 </form>
+<?php if (isset($error)) {echo $error . "<br/>";} ?><br/>
 
 <?php require(__DIR__ . "/../View/footer/footer.html"); ?>
