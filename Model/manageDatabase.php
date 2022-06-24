@@ -22,7 +22,8 @@ class ManageDatabase {
 			$this->db = new PDO("pgsql:host=" . $DB_HOST . ";dbname=" . $DB_NAME, $DB_USER, $DB_PASSWORD, $DB_OBJ_OPTIONS);
 			//echo "Connection successful\n";
 		} catch (PDOException $e) {
-    		echo "Connection failed:\n" . $e->getMessage();
+    		echo "Connection to database failed.<br><br>Error Message:<br>" . $e->getMessage();
+			exit();
 		}
 
 		//Create database unless it already exists
@@ -76,10 +77,10 @@ class ManageDatabase {
 	}
 
 	function createPicture($filename, $username) {
-		$storagePath = "public/picture/" . $filename;
+		$storagePath = "View/public/pictures/" . $filename;
 		$creationTime = date('Y-m-d H:i:s');
-		return $this->execSqlParams("INSERT INTO pictures (storagePath, creationTime, account_id) VALUES (?, ?, ?)",
-		   							[$storagePath, $creationTime, $username]);
+		return $this->execSqlParams("INSERT INTO pictures (storagePath, creationTime, account_id)
+		    VALUES (?, ?, ?)", [$storagePath, $creationTime, $username]);
 	}
 
 	function getPictures() {
@@ -107,10 +108,21 @@ class ManageDatabase {
 		return $this->execSqlParams("DELETE FROM likes WHERE liker_id=? AND picture_id=?", [$liker, $picture]);
 	}
 	
-	function createComment($commenter, $picture, $content) {
-		return $this->execSqlParams("INSERT INTO comments (commenter_id, picture_id, content, time) 
-									VALUES (?, ?, ?, ?)", 
-									[$commenter, $picture, $content, date('Y-m-d H:i:s')]);
+	function createCommentAndSendNotification($commenter, $picture, $content) {
+		$ret = $this->execSqlParams("INSERT INTO comments (commenter_id, picture_id, content, time) 
+					VALUES (?, ?, ?, ?)", [$commenter, $picture, $content, date('Y-m-d H:i:s')]);
+		if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
+			return $ret;
+		}
+		$AccountOfPicture = ($this->getPicture($picture))[0]->account_id;
+		$AccountOfPicture = $this->getAccount($AccountOfPicture);
+		if ($AccountOfPicture[0]->picture_comment_email_notification === false) { return $ret; }
+		require(__DIR__ . "/../Controller/utils/sendmail.php");
+		$picture = substr($picture, strrpos('/', $picture) - strlen($picture));
+		sendMail($AccountOfPicture[0]->email, $AccountOfPicture[0]->username, 
+			"New Comment On Picture", "The following  comment was made by ${commenter} 
+			on your picture ${picture}.<br><br>Comment:<br>${content}";
+		return $ret;
 	}
 
 	function getCommentsOfPicture($picture) {

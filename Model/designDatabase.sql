@@ -2,7 +2,7 @@ CREATE TABLE account (
 	username varchar(20) PRIMARY KEY,
 	password varchar(100) NOT NULL,
 	email varchar(40) NOT NULL,
-	picture_comment_email_notification boolean DEFAULT false
+	picture_comment_email_notification boolean DEFAULT true
 );
 
 CREATE TABLE pictures (
