@@ -19,7 +19,8 @@ class ManageDatabase {
 
 		//Connect to database
 		try {
-			$this->db = new PDO("pgsql:host=" . $DB_HOST . ";dbname=" . $DB_NAME, $DB_USER, $DB_PASSWORD, $DB_OBJ_OPTIONS);
+			$this->db = new PDO("pgsql:host=" . $DB_HOST . ";dbname=" . $DB_NAME, 
+				$DB_USER, $DB_PASSWORD, $DB_OBJ_OPTIONS);
 			//echo "Connection successful\n";
 		} catch (PDOException $e) {
     		echo "Connection to database failed.<br><br>Error Message:<br>" . $e->getMessage();
@@ -118,10 +119,10 @@ class ManageDatabase {
 		$AccountOfPicture = $this->getAccount($AccountOfPicture);
 		if ($AccountOfPicture[0]->picture_comment_email_notification === false) { return $ret; }
 		require(__DIR__ . "/../Controller/utils/sendmail.php");
-		$picture = substr($picture, strrpos('/', $picture) - strlen($picture));
-		sendMail($AccountOfPicture[0]->email, $AccountOfPicture[0]->username, 
-			"New Comment On Picture", "The following  comment was made by ${commenter} 
-			on your picture ${picture}.<br><br>Comment:<br>${content}";
+		$picture = substr($picture, strrpos($picture, '/') - strlen($picture) + 1);
+		echo sendMail($AccountOfPicture[0]->email, $AccountOfPicture[0]->username, 
+			"New Comment On Picture", "The following comment was made by ${commenter} 
+			on your picture ${picture}.<br><br>Comment:<br>${content}");
 		return $ret;
 	}
 

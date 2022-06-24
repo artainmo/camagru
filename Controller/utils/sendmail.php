@@ -19,6 +19,8 @@ function sendMail($toMail, $toName, $subject, $content) {
 	//$mail->SMTPDebug  = 1;
 
 	//hotmail is used because gmail and icloud do not accept application connection for security reasons
+	//hotmail can still block account due to suspicious activity, 
+	//if this is the case you have to manually unblock it
 	$mail->Host = 'smtp-mail.outlook.com';
 	$mail->SMTPSecure = 'tls';
 	$mail->Port = 587;

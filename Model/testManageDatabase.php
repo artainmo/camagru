@@ -23,8 +23,8 @@ $db->createAccount("art", "pass", "art@gmail.com");
 
 print_r($db->createPicture("selfie", "art"));
 print_r($db->getPictures());
-print_r($db->getPicture("public/picture/selfie"));
-print_r($db->deletePicture("public/picture/selfie"));
+print_r($db->getPicture("View/public/pictures/selfie"));
+print_r($db->deletePicture("View/public/pictures/selfie"));
 
 $db->deleteAccount("art");
 
@@ -32,21 +32,21 @@ echo "\033[01;32mLIKES TABLE TESTS \033[0m\n";
 $db->createAccount("art", "pass", "art@gmail.com");
 $db->createPicture("selfie", "art");
 
-print_r($db->createLike("art", "public/picture/selfie"));
-print_r($db->getLikesOfPicture("public/picture/selfie"));
-print_r($db->deleteLike("art", "public/picture/selfie"));
+print_r($db->createLike("art", "View/public/pictures/selfie"));
+print_r($db->getLikesOfPicture("View/public/pictures/selfie"));
+print_r($db->deleteLike("art", "View/public/pictures/selfie"));
 
-$db->deletePicture("public/picture/selfie");
+$db->deletePicture("View/public/pictures/selfie");
 $db->deleteAccount("art");
 
 echo "\033[01;32mCOMMENTS TABLE TESTS \033[0m\n";
-$db->createAccount("art", "pass", "art@gmail.com");
-$db->createPicture("selfie", "art");
+$db->createAccount("test918273", "pass", "tainmontarthur@gmail.com");
+$db->createPicture("selfie", "test918273");
 
-print_r($db->createComment("art", "public/picture/selfie", "nice"));
-$comments = $db->getCommentsOfPicture("public/picture/selfie");
+print_r($db->createCommentAndSendNotification("test918273", "View/public/pictures/selfie", "nice"));
+$comments = $db->getCommentsOfPicture("View/public/pictures/selfie");
 print_r($comments);
 print_r($db->deleteComment($comments[0]->id));
 
-$db->deletePicture("public/picture/selfie");
-$db->deleteAccount("art");
+$db->deletePicture("View/public/pictures/selfie");
+$db->deleteAccount("test918273");
