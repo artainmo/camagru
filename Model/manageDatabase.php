@@ -77,23 +77,51 @@ class ManageDatabase {
 		return $this->execSqlParams("DELETE FROM account WHERE username=?", [$username]);
 	}
 
-	function createPicture($filename, $username) {
-		$storagePath = "View/public/pictures/" . $filename;
+	function createPicture($imagePNGData, $username) {
+		$storagePath = __DIR__ . "/../View/public/pictures/" . uniqid(rand(), true) . '.png';
 		$creationTime = date('Y-m-d H:i:s');
-		return $this->execSqlParams("INSERT INTO pictures (storagePath, creationTime, account_id)
-		    VALUES (?, ?, ?)", [$storagePath, $creationTime, $username]);
+		$ret = $this->execSqlParams("INSERT INTO pictures (storagePath, creationTime, account_id)" .
+			"VALUES (?, ?, ?)", [$storagePath, $creationTime, $username]);
+		if (!isset($ret[0]) or $ret[0] !== false) {
+			file_put_contents($storagePath, $imagePNGData);
+		}
+		return $ret;
 	}
 
 	function getPictures() {
-		return $this->db->query("SELECT * FROM pictures")->fetchAll();
+		$i = 0;
+		$ret = $this->db->query("SELECT * FROM pictures");
+
+		while (count($ret) > $i) {
+			$ret[i]->imageData = file_get_contents($ret[$i]->storagePath);
+			$i++;
+		}
+		return $ret;
+	}
+	
+	function getPicturesOfUser($username) {
+		$i = 0;
+		$ret = $this->execSqlParams("SELECT * FROM pictures WHERE account_id=?", [$username]);
+		
+		while (count($ret) > $i) {
+			$ret[$i]->imageData = file_get_contents($ret[$i]->storagepath);
+			$i++;
+		}
+		return $ret;
 	}
 
 	function getPicture($storagePath) {
-		return $this->execSqlParams("SELECT * FROM pictures WHERE storagePath=?", [$storagePath]);
+		$ret = $this->execSqlParams("SELECT * FROM pictures WHERE storagePath=?", [$storagePath]);
+		$ret[0]->imageData = file_get_contents($storagePath);
+		return $ret;
 	}
 
 	function deletePicture($storagePath) {
-		return $this->execSqlParams("DELETE FROM pictures WHERE storagePath=?", [$storagePath]);
+		$ret = $this->execSqlParams("DELETE FROM pictures WHERE storagePath=?", [$storagePath]);
+		if (!isset($ret[0]) or $ret[0] !== false) {
+			unlink($storagePath);	
+		}
+		return $ret;
 	}
 
 	function createLike($liker, $picture) {

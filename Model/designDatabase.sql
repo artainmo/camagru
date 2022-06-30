@@ -6,7 +6,7 @@ CREATE TABLE account (
 );
 
 CREATE TABLE pictures (
-	storagePath varchar(50) PRIMARY KEY,
+	storagePath varchar(150) PRIMARY KEY,
 	creationTime timestamp NOT NULL,
 	account_id varchar(20) REFERENCES account(username)
 );
