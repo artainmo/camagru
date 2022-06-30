@@ -12,8 +12,7 @@
 		    	$nameAlert = "Name already in use.";
 			} else { $error = "Internal server error occured:<br/>" . $ret[1]; }
 		} else { $_SESSION['account'] = $name; }
-	}
-	if (isset($_POST['emailSubmit'])) {
+	} elseif (isset($_POST['emailSubmit'])) {
 		$email = htmlspecialchars(trim($_POST['emailInput']));
 		$email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
@@ -25,8 +24,7 @@
 				$error = "Internal server error occured:<br/>" . $ret[1]; 
 			}
 		}
-	}
-	if (isset($_POST['passwordSubmit'])) {
+	} elseif (isset($_POST['passwordSubmit'])) {
 		$password = htmlspecialchars(trim($_POST['passwordInput']));
 
 		if (!preg_match('~[0-9]+~', $password) || !preg_match('~[a-z]+~', $password)
@@ -39,32 +37,45 @@
 				$error = "Internal server error occured:<br/>" . $ret[1]; 
 			}
 		}
+	} elseif ($_SERVER['REQUEST_METHOD'] === "POST") {
+		if (isset($_POST['notif']) and $_POST['notif'] === "on") {
+			$notif = "True";
+		} else {//If notification wants to be deactivated by unclicking checkbox POST is sent without body
+			$notif = "False";
+		}
+		$ret = $db->updateAccount($_SESSION['account'], "picture_comment_email_notification",
+		   	$notif);		
+		if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
+			$error = "Internal server error occured:<br/>" . $ret[1]; 
+		}
 	}
 ?>
 
 <?php require(__DIR__ . "/../View/header/in-app-header.php"); ?>
 
 <h3>Profile</h3>
-<?php 
-	$account = $db->getAccount($_SESSION['account'])[0]; 
-	echo "Name: " . $account->username . "<br/>";
-	echo "Email: " . $account->email . "<br/>";
-	echo "Receive email notification when someone comments on your picture: " . 
-		($account->picture_comment_email_notification ? 'Yes':'No') . 
-		"<br/><br/><br/>";
-?>
-
+<?php $account = $db->getAccount($_SESSION['account'])[0]; ?>
+<?php echo "Name: " . $account->username . "<br/>"; ?>
 <form action="profile.php" method="POST">
     <label>Change Name </label>
 	<input type="text" name="nameInput" maxlength="20" required/>
 	<button type="submit" name="nameSubmit">submit</Button><br/>
     <?php if (isset($nameAlert)) {echo $nameAlert . "<br/>";} ?><br/>
 </form>
+<?php echo "Email: " . $account->email . "<br/>"; ?>
 <form action="profile.php" method="POST">
     <label>Change email</label>
     <input type="text" name="emailInput" maxlength="40" required/>
 	<button type="submit" name="emailSubmit">submit</Button><br/>
 	<?php if (isset($emailAlert)) {echo $emailAlert . "<br/>";} ?><br/>
+</form>
+<form action="profile.php" method="POST">
+	<label>Email notification on comment: </label>
+	<?php if ($account->picture_comment_email_notification) { ?>
+		<input type="checkbox" name="notif" onChange="this.form.submit()" checked/><br><br>
+	<?php } else { ?>	
+		<input type="checkbox" name="notif" onChange="this.form.submit()"/><br><br>
+	<?php } ?>
 </form>
 <form action="profile.php" method="POST">
     <label>Change password</label>
