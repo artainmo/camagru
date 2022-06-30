@@ -90,7 +90,7 @@ class ManageDatabase {
 
 	function getPictures() {
 		$i = 0;
-		$ret = $this->db->query("SELECT * FROM pictures");
+		$ret = $this->db->query("SELECT * FROM pictures ORDER BY creationTime DESC");
 
 		while (count($ret) > $i) {
 			$ret[i]->imageData = file_get_contents($ret[$i]->storagePath);
@@ -101,7 +101,8 @@ class ManageDatabase {
 	
 	function getPicturesOfUser($username) {
 		$i = 0;
-		$ret = $this->execSqlParams("SELECT * FROM pictures WHERE account_id=?", [$username]);
+		$ret = $this->execSqlParams("SELECT * FROM pictures WHERE account_id=? " . 
+			"ORDER BY creationTime DESC", [$username]);
 		
 		while (count($ret) > $i) {
 			$ret[$i]->imageData = file_get_contents($ret[$i]->storagepath);
