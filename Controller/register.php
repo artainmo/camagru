@@ -52,5 +52,3 @@
 	<button type="submit" name="register">Register</button><br/><br/>
 	<?php if (isset($error)) {echo $error . "<br/>";} ?><br/>
 </form>
-
-<?php require(__DIR__ . "/../View/footer/footer.html"); ?>

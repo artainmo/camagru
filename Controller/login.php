@@ -30,5 +30,3 @@
 	<button type="submit" name="login">Login</button><br/><br/>
 	<?php if (isset($error)) {echo $error . "<br/>";} ?><br/>
 </form>
-
-<?php require(__DIR__ . "/../View/footer/footer.html"); ?>

@@ -90,10 +90,10 @@ class ManageDatabase {
 
 	function getPictures() {
 		$i = 0;
-		$ret = $this->db->query("SELECT * FROM pictures ORDER BY creationTime DESC");
+		$ret = $this->db->query("SELECT * FROM pictures ORDER BY creationTime DESC")->fetchAll();
 
 		while (count($ret) > $i) {
-			$ret[i]->imageData = file_get_contents($ret[$i]->storagePath);
+			$ret[$i]->imageData = file_get_contents($ret[$i]->storagepath);
 			$i++;
 		}
 		return $ret;
