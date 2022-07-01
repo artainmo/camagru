@@ -17,7 +17,8 @@
 	if (count($pics) === 0) { echo "<p>No pictures exist yet.</p>"; }
 	while ($i < count($pics)) {
 		$pic = $pics[$i];
-		echo "<img src='$pic->imageData' width='320' height='240'>";
+		echo "<img src='$pic->imageData' width='320' height='240' " . 
+		   "onClick='window.location.href=`/view-picture.php?picId=$pic->storagepath`'>";
 		$i++;
 		if ($i % 9 === 0) { break; }
 		if ($i % 3 === 0) { echo "<br><br>"; } else { echo "&emsp;"; }

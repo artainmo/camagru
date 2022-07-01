@@ -113,7 +113,9 @@ class ManageDatabase {
 
 	function getPicture($storagePath) {
 		$ret = $this->execSqlParams("SELECT * FROM pictures WHERE storagePath=?", [$storagePath]);
-		$ret[0]->imageData = file_get_contents($storagePath);
+		if (!isset($ret[0]) or $ret[0] !== false) {
+			$ret[0]->imageData = file_get_contents($storagePath);
+		}
 		return $ret;
 	}
 
@@ -128,6 +130,13 @@ class ManageDatabase {
 	function createLike($liker, $picture) {
 		return $this->execSqlParams("INSERT INTO likes (liker_id, picture_id, time) VALUES (?, ?, ?)",
 									[$liker, $picture, date('Y-m-d H:i:s')]);
+	}
+
+	function getILiked($liker, $picture) {
+		$ret = $this->execSqlParams("SELECT * FROM likes WHERE liker_id=? AND picture_id=?"
+			, [$liker, $picture]);
+		if (isset($ret[0]) and $ret[0] === false) { return false; }
+		return (count($ret) === 0) ? false : true;
 	}
 
 	function getLikesOfPicture($picture) {
@@ -149,14 +158,19 @@ class ManageDatabase {
 		if ($AccountOfPicture[0]->picture_comment_email_notification === false) { return $ret; }
 		require(__DIR__ . "/../Controller/utils/sendmail.php");
 		$picture = substr($picture, strrpos($picture, '/') - strlen($picture) + 1);
-		echo sendMail($AccountOfPicture[0]->email, $AccountOfPicture[0]->username, 
-			"New Comment On Picture", "The following comment was made by ${commenter} 
-			on your picture ${picture}.<br><br>Comment:<br>${content}");
+		sendMail($AccountOfPicture[0]->email, $AccountOfPicture[0]->username, 
+			"New Comment On Picture", "The following comment was made by ${commenter} " .
+			"on one of your pictures.<br><br>Comment:<br>${content}<br><br>");
+			//"Click on the following button to see the new comment: " .
+            //"<button><a href=" .
+			//"'http://localhost:8000/view-picture.php?picId=${picture}'" . The link does not work because user first has to connect
+            //">Verify</a></button>");
 		return $ret;
 	}
 
 	function getCommentsOfPicture($picture) {
-		return $this->execSqlParams("SELECT * FROM comments WHERE picture_id=?", [$picture]);
+		return $this->execSqlParams("SELECT * FROM comments WHERE picture_id=? " .
+			"ORDER BY time ASC", [$picture]);
 	}
 
 	function deleteComment($id) {

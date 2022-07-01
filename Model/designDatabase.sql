@@ -13,7 +13,7 @@ CREATE TABLE pictures (
 
 CREATE TABLE likes (
 	liker_id varchar(20) REFERENCES account(username),
-	picture_id varchar(50) REFERENCES pictures(storagePath),
+	picture_id varchar(150) REFERENCES pictures(storagePath),
 	PRIMARY KEY (liker_id, picture_id),
 	time timestamp NOT NULL
 );
@@ -23,7 +23,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE comments (
 	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 	commenter_id varchar(20) REFERENCES account(username),
-	picture_id varchar(50) REFERENCES pictures(storagePath),
+	picture_id varchar(150) REFERENCES pictures(storagePath),
 	content text NOT NULL,
 	time timestamp NOT NULL
 );
