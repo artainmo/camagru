@@ -17,14 +17,16 @@
 	}
 
 	if (isset($_POST['like'])) {
-		if ($_POST['like'] === 'like') {
+		if ($_POST['like'] === 'Like') {
 			$db->createLike($_SESSION['account'], $query['picId']);
-		} elseif ($_POST['like'] === 'unlike') {
+		} elseif ($_POST['like'] === 'Unlike') {
 			$db->deleteLike($_SESSION['account'], $query['picId']);
 		}
 	} elseif (isset($_POST['commentSubmit'])) {
 		$db->createCommentAndSendNotification($_SESSION['account'], 
 			$query['picId'], $_POST['commentInput']);
+		unset($_POST['commentSubmit']);
+		unset($_POST['commentInput']);
 	}	
 
 	$pic = $pic[0];
@@ -38,11 +40,14 @@
 <p>Creation time: <?= $pic->creationtime ?></p>
 <img src='<?= $pic->imageData ?>' width='320' height='240'>
 <br><br>
-<?php if ($ILiked) { ?>
-	<button onClick="likePic('unlike')">Unlike</button>
-<?php } else { ?>
-	<button onClick="likePic('like')">Like</button>
-<?php } ?>
+
+<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST">
+	<?php if (!$ILiked) { ?>
+    	<button type="submit" name="like" value="Like">Like</Button><br/>
+	<?php } else { ?>
+    	<button type="submit" name="like" value="Unlike">Unlike</Button><br/>
+	<?php } ?>
+</form>
 <p>Likes: <?= $picLikes ?></p>
 
 <h4>Comments</h4>
@@ -58,14 +63,3 @@
     <input type="text" name="commentInput" required/>
     <button type="submit" name="commentSubmit">comment</Button><br/>
 </form>
-
-<script>
-function likePic(like) {
-	fetch("http://" + "<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>", {
-   	  method: "POST", //This should be delete but we use post instead because php can easily parse it
-	  headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-      body: `like=${like}`
-    });
-	window.location.reload();//Refresh the page to see new like
-}
-</script>
