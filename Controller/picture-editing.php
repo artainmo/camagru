@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	if (!isset($_SESSION['account'])) { header('Location: http://localhost:8000/index.php'); }
 	if ($_SERVER["REQUEST_METHOD"] === "POST" and isset($_POST['imageData'])) {
 		require_once(__DIR__ . "/../Model/manageDatabase.php");
 		$db = new ManageDatabase;
