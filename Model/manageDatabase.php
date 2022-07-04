@@ -147,6 +147,10 @@ class ManageDatabase {
 		return $this->execSqlParams("DELETE FROM likes WHERE liker_id=? AND picture_id=?", [$liker, $picture]);
 	}
 
+	function deleteLikesOfPicture($picId) {
+		return $this->execSqlParams("DELETE FROM likes WHERE picture_id=?", [$picId]);
+	}
+
 	function createCommentAndSendNotification($commenter, $picture, $content) {
 		$ret = $this->execSqlParams("INSERT INTO comments (commenter_id, picture_id, content, time)
 					VALUES (?, ?, ?, ?)", [$commenter, $picture, $content, date('Y-m-d H:i:s')]);
@@ -175,5 +179,9 @@ class ManageDatabase {
 
 	function deleteComment($id) {
 		return $this->execSqlParams("DELETE FROM comments WHERE id=?", [$id]);
+	}
+
+	function deleteCommentsOfPicture($picId) {
+		return $this->execSqlParams("DELETE FROM comments WHERE picture_id=?", [$picId]);
 	}
 }

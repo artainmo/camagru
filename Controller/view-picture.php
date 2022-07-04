@@ -18,6 +18,8 @@
 	}
 
 	if ($_SERVER["REQUEST_METHOD"] === "POST" and isset($_POST['storagePath'])) {
+		$db->deleteLikesOfPicture($_POST['storagePath']);
+		$db->deleteCommentsOfPicture($_POST['storagePath']);
 		$db->deletePicture($_POST['storagePath']);
 	} elseif (isset($_POST['like'])) {
 		if ($_POST['like'] === 'Like') {

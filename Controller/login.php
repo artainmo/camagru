@@ -11,7 +11,7 @@
 			$error = "Wrong name or password.";
 		} else {
 			$_SESSION['account'] = $name;
-			header('Location: http://localhost:8000/profile.php');
+			header('Location: http://localhost:8000/gallery.php');
 		}
 	}
 ?>

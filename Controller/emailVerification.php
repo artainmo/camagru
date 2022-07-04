@@ -28,5 +28,5 @@ $_SESSION['account'] = $query['name'];
 echo "<div class='title'>" .
 			"<p>Email verified successfully!</p><br>" .
 			"<button onclick='window.location.href=" .
-			"`http://localhost:8000/profile.php`;'>Continue</button>" .
+			"`http://localhost:8000/gallery.php`;'>Continue</button>" .
 		 "</div>";
