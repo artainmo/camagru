@@ -1,15 +1,17 @@
+<?php require(__DIR__ . "/../View/header/base-header.html"); ?>
+
 <?php
 session_start();
 
 if (!isset($_SERVER['QUERY_STRING'])) {
-	echo "We send you an email to verify your account.";
+	echo '<p class="title">We send you an email to verify your account.</p>';
 	exit();
 }
 
 require(__DIR__ . "/utils/crypting.php");
 $decrypted_token = encrypt_decrypt($_SERVER['QUERY_STRING'], 'decrypt');
 parse_str($decrypted_token, $query);
-if (!isset($query["name"]) or !isset($query["email"]) or !isset($query["password"])) {	
+if (!isset($query["name"]) or !isset($query["email"]) or !isset($query["password"])) {
 	echo "Not able to verify email.";
 	exit();
 }
@@ -22,6 +24,9 @@ if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
 		"Click <a href='http://localhost:8000/register.php'>here</a> to try again.";
 	exit();
 }
-echo "Email verified successfully! ";
 $_SESSION['account'] = $query['name'];
-echo "<button onclick='window.location.href=`http://localhost:8000/profile.php`;'>Continue</button>";
+echo "<div class='title'>" .
+			"<p>Email verified successfully!</p><br>" .
+			"<button onclick='window.location.href=" .
+			"`http://localhost:8000/profile.php`;'>Continue</button>" .
+		 "</div>";

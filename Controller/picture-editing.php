@@ -5,22 +5,18 @@
 		require_once(__DIR__ . "/../Model/manageDatabase.php");
 		$db = new ManageDatabase;
 		//When posting with 'Content-Type: application/x-www-form-urlencoded' the '+' gets transformed into ' ' which we need to revert for the image data to be correct
-		$_POST['imageData'] = str_replace(" ", "+", $_POST['imageData']); 
+		$_POST['imageData'] = str_replace(" ", "+", $_POST['imageData']);
 		$db->createPicture($_POST['imageData'], $_SESSION['account']);
 	}
-	if ($_SERVER["REQUEST_METHOD"] === "POST" and isset($_POST['storagePath'])) {
-		require_once(__DIR__ . "/../Model/manageDatabase.php");
-		$db = new ManageDatabase;
-		$db->deletePicture($_POST['storagePath']);
-	}	
 ?>
 
 <?php require(__DIR__ . "/../View/header/in-app-header.php"); ?>
 
-<h3>Take Picture</h3>
-<div id="getPicture"></div>
+<h1 class="pageTitle">Create Picture</h1>
+<div class="wrapperPictureEditing">
+<div id="getPicture" class="block1PictureEditing"></div>
 <canvas id="takePictureCanvas" style="display:none;" width="320" height="240"></canvas>
-<form id="takePictureButton">
+<form id="takePictureButton" class="block2PictureEditing">
 	<p>Choose Overlay Image:</p>
 	<label><input type="radio" name="overlay" value="wine" required>Wine</label><br>
 	<label><input type="radio" name="overlay" value="christmas">Christmas</label><br>
@@ -30,18 +26,25 @@
 	<button type="submit">Take photo</button><br>
 </form>
 
+<div class="block3PictureEditing">
 <h3>Your Pictures</h3>
-<ul>
 <?php
     require_once(__DIR__ . "/../Model/manageDatabase.php");
     $db = new ManageDatabase;
     $myPics = $db->getPicturesOfUser($_SESSION['account']);
+		$i = 0;
 	foreach ($myPics as $pic) {
-		echo "<li><img src='$pic->imageData' width='320' height='240'>
-			<button onClick='deletePicture(`$pic->storagepath`)'>Delete</button></li>";
-	}	
+		$i++;
+		echo "<img src='$pic->imageData' width='320' height='240' " .
+					"onClick='window.location.href=" .
+	        "`/view-picture.php?picId=$pic->storagepath&origin=picture-editing`'>";
+		if ($i % 2 === 0) { echo "<br><br>"; } else {
+			echo "&emsp;&emsp;&emsp;&emsp;";
+		}
+	}
 ?>
-</ul>
+</div>
+<br><br><br><br>
 
 <?php require(__DIR__ . "/../View/footer/footer.html"); ?>
 
@@ -53,25 +56,15 @@ function displaySelectedPicture(input) {
   	var reader = new FileReader();
 
     reader.onload = function (e) {
-		selectedPictureDisplay.src = e.target.result;
+			selectedPictureDisplay.src = e.target.result;
     };
 
     reader.readAsDataURL(input.files[0]);
   } else { selectedPictureDisplay.removeAttribute('src') }
 }
 
-function deletePicture(storagePath) {
-	//Call php to delete picture
-	fetch("http://localhost:8000/picture-editing.php", {
-		method: "POST", //This should be delete but we use post instead because php can easily parse it
-		headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-     	body: `storagePath=${storagePath}`
-    });
-	window.location.reload();//Refresh the page to see new picture in picture list
-}
-
 function takePicture(camera) {
-	const takePictureButton = document.getElementById('takePictureButton');	
+	const takePictureButton = document.getElementById('takePictureButton');
 
 	takePictureButton.addEventListener("submit", () => {
   	 	let canvas = document.getElementById('takePictureCanvas');
@@ -80,31 +73,23 @@ function takePicture(camera) {
 		selectedOverlayImage = document.querySelector('input[name="overlay"]:checked').value;
 		overlayImg.src = `overlayImages/${selectedOverlayImage}.png`
 
-		console.log('before');
 		if (camera) {
-			console.log('NOT IN');
 			const stream = document.querySelector('video');
 			canvasContext.drawImage(stream, 0, 0, canvas.width, canvas.height);
 		} else {
-			console.log('IN');
-			const selectedImage = document.getElementById('selectedPictureDisplay');	
+			const selectedImage = document.getElementById('selectedPictureDisplay');
 			canvasContext.drawImage(selectedImage, 0, 0, canvas.width, canvas.height);
 		}
-		
+
 		overlayImg.onload = () => {
-			console.log('1');
-			canvasContext.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);	
-			console.log('2');
+			canvasContext.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
 			let imageData = canvas.toDataURL('image/png');
-			console.log('3');
 			//Call php to create picture in database
-			console.log(imageData);
 			fetch("http://localhost:8000/picture-editing.php", {
 				method: "POST",
 				headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
         		body: `imageData=${imageData}`
 			});
-			console.log('4');
 			window.location.reload();//Refresh the page to see new picture in picture list
 		}
 	});
@@ -139,14 +124,14 @@ async function init() {
 
   try {
     const stream = await navigator.mediaDevices.getUserMedia({video: true});
-  	getPictureHTML.insertAdjacentHTML('afterbegin', 
+  	getPictureHTML.insertAdjacentHTML('afterbegin',
 		"<video width='320' height='240' autoplay></video><br>");
 	setupVideoStream(stream);
 	takePicture(true);
   } catch (error) {
-	getPictureHTML.insertAdjacentHTML('afterbegin', "<p id='error'></p>" + 
-	"<input type='file' name='selectedPicture' accept='image/*' " + 
-	"onchange='displaySelectedPicture(this);'>" + 
+	getPictureHTML.insertAdjacentHTML('afterbegin', "<p id='error'></p>" +
+	"<input type='file' name='selectedPicture' accept='image/*' " +
+	"onchange='displaySelectedPicture(this);'>" +
 	"<br><img id='selectedPictureDisplay' width='320' height='240'/>");
 	streamError(error);
   	takePicture(false);

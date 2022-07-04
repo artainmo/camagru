@@ -20,9 +20,9 @@
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $emailAlert = "Not a valid email.";
 		} else {
-			$ret = $db->updateAccount($_SESSION['account'], "email", $email);		
+			$ret = $db->updateAccount($_SESSION['account'], "email", $email);
 			if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
-				$error = "Internal server error occured:<br/>" . $ret[1]; 
+				$error = "Internal server error occured:<br/>" . $ret[1];
 			}
 		}
 	} elseif (isset($_POST['passwordSubmit'])) {
@@ -32,10 +32,10 @@
             || strlen($password) < 5) {
             $passwordAlert = "Password must have a minimal length of 5 characters,
                 contain at least one number and lower case character.";
-        } else {	
-			$ret = $db->updateAccount($_SESSION['account'], "password", $password);		
+        } else {
+			$ret = $db->updateAccount($_SESSION['account'], "password", $password);
 			if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
-				$error = "Internal server error occured:<br/>" . $ret[1]; 
+				$error = "Internal server error occured:<br/>" . $ret[1];
 			}
 		}
 	} elseif ($_SERVER['REQUEST_METHOD'] === "POST") {
@@ -45,45 +45,47 @@
 			$notif = "False";
 		}
 		$ret = $db->updateAccount($_SESSION['account'], "picture_comment_email_notification",
-		   	$notif);		
+		   	$notif);
 		if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
-			$error = "Internal server error occured:<br/>" . $ret[1]; 
+			$error = "Internal server error occured:<br/>" . $ret[1];
 		}
 	}
 ?>
 
 <?php require(__DIR__ . "/../View/header/in-app-header.php"); ?>
 
-<h3>Profile</h3>
+<div class="centerForm">
+<h1>Profile</h1><br><br>
 <?php $account = $db->getAccount($_SESSION['account'])[0]; ?>
-<?php echo "Name: " . $account->username . "<br/>"; ?>
 <form action="profile.php" method="POST">
-    <label>Change Name </label>
+    <label>Change your name '<?=$account->username?>'</label><br>
 	<input type="text" name="nameInput" maxlength="20" required/>
-	<button type="submit" name="nameSubmit">submit</Button><br/>
-    <?php if (isset($nameAlert)) {echo $nameAlert . "<br/>";} ?><br/>
+	<button type="submit" name="nameSubmit">submit</Button><br>
+    <?php if (isset($nameAlert)) {echo $nameAlert . "<br>";} ?><br>
 </form>
-<?php echo "Email: " . $account->email . "<br/>"; ?>
 <form action="profile.php" method="POST">
-    <label>Change email</label>
+    <label>Change your email '<?=$account->email?>'</label><br>
     <input type="text" name="emailInput" maxlength="40" required/>
-	<button type="submit" name="emailSubmit">submit</Button><br/>
-	<?php if (isset($emailAlert)) {echo $emailAlert . "<br/>";} ?><br/>
+	<button type="submit" name="emailSubmit">submit</Button><br>
+	<?php if (isset($emailAlert)) {echo $emailAlert . "<br>";} ?><br>
+</form>
+<form action="profile.php" method="POST">
+    <label>Change your password</label><br>
+    <input type="password" name="passwordInput" maxlength="20" required/>
+	<button type="submit" name="passwordSubmit">submit</Button><br>
+	<?php if (isset($passwordAlert)) {echo $passwordAlert . "<br>";} ?><br/>
 </form>
 <form action="profile.php" method="POST">
 	<label>Email notification on comment: </label>
 	<?php if ($account->picture_comment_email_notification) { ?>
-		<input type="checkbox" name="notif" onChange="this.form.submit()" checked/><br><br>
-	<?php } else { ?>	
-		<input type="checkbox" name="notif" onChange="this.form.submit()"/><br><br>
+		<input type="checkbox" name="notif" onChange="this.form.submit()" checked/>
+    <br><br>
+	<?php } else { ?>
+		<input type="checkbox" name="notif" onChange="this.form.submit()"/>
+    <br><br>
 	<?php } ?>
 </form>
-<form action="profile.php" method="POST">
-    <label>Change password</label>
-    <input type="password" name="passwordInput" maxlength="20" required/>
-	<button type="submit" name="passwordSubmit">submit</Button><br/>
-	<?php if (isset($passwordAlert)) {echo $passwordAlert . "<br/>";} ?><br/><br/>
-</form>
-<?php if (isset($error)) {echo $error . "<br/>";} ?><br/>
+<?php if (isset($error)) {echo $error . "<br>";} ?><br>
+</div>
 
 <?php require(__DIR__ . "/../View/footer/footer.html"); ?>

@@ -1,8 +1,8 @@
 <?php require(__DIR__ . "/base-header.html"); ?>
-<nav>
-	<h3>Camagru</h3>
-	<ul>
-		<li><a href="picture-editing.php">Create</a></li>
-		<li><a href="gallery.php">See</a></li>
-	</ul>
-<nav>
+<nav class="header">
+	<h1>Camagru</h1>
+	<div class="menu">
+		<a href="picture-editing.php">Create</a>
+		<a href="gallery.php">See</a>
+	</div>
+</nav>

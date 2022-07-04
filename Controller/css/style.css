@@ -1,0 +1,171 @@
+/*
+* Both the css and overlayImages are put in Controller while
+* they should be in the View because the php server is launched
+* from the Controller which cannot search files in directories behind itself
+*
+* Overall the MVC structure was not a success for this mainly php project
+* Because php is a backend language written in same files as HTML frontend
+* leading to low file separation between frontend and backend, all the while
+* having the above described problem
+*/
+
+* {
+	margin: 0;
+	padding: 0;
+	border-size: border-box;
+}
+
+* {
+	background-color: #2c848b;
+	color: #3f3e33;
+	font-family: Helvetica;
+}
+
+button {
+	background-color: #8da638;
+	border: none;
+	border-radius: 5%;
+	padding: 10px 20px;
+	text-align: center;
+	font-size: 16px;
+}
+
+input {
+  padding: 8px 15px;
+  margin: 8px 0;
+	background-color: #f4eed3;
+	border: none;
+	border-radius: 5%;
+  box-sizing: border-box;
+	font-size: 16px;
+}
+
+label {
+	font-weight: lighter;
+	font-size: 16px;
+}
+
+.title {
+		position: fixed;
+  	top: 40%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+		font-size: 30px;
+		text-align: center;
+}
+
+.header {
+	background-color: #8da638;
+	padding: 15px 10px;
+}
+
+.header h1 {
+	background-color: #8da638;
+	display: inline;
+}
+
+.header a {
+	background-color: #8da638;
+  float: left;
+  text-align: center;
+  padding: 8px;
+	text-decoration: none;
+}
+
+.menu {
+  float: right;
+}
+
+.centerForm {
+		position: fixed;
+  	top: 40%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+		text-align: center;
+}
+
+.footer {
+	position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #8da638;
+  text-align: center;
+	padding: 20px 10px;
+}
+
+.footer a {
+	background-color: #8da638;
+  padding: 8px;
+	text-decoration: none;
+}
+
+.pageTitle {
+	margin: 15px 15px;
+	text-align: center;
+}
+
+.wrapperPictureEditing {
+		margin: 60px 40px;
+}
+
+.block1PictureEditing {
+    display: inline-block;
+}
+
+.block2PictureEditing {
+		vertical-align: top;
+    display: inline-block;
+}
+
+.block3PictureEditing {
+	float: right;
+	text-align: center;
+	border: 4px ridge #8da638;
+	height: 600px;
+	width: 700px;
+	overflow: scroll;
+}
+
+.block3PictureEditing h3 {
+	padding: 10px 10px;
+}
+
+.galleryPicsDisplay {
+	margin: 20px 40px;
+	text-align: center;
+}
+
+.backButton {
+	margin: 10px 10px;
+}
+
+.wrapperPictureInfo {
+		margin: 60px 40px;
+}
+
+.block1PictureInfo {
+    display: inline-block;
+		float: left;
+}
+
+.block3PictureInfo {
+	float: left;
+	padding-left: 50px;
+	overflow: scroll;
+}
+
+.block1Like {
+    display: inline-block;
+		float: left;
+		padding-right: 3px;
+}
+
+.comment {
+	padding-bottom: 7px;
+}
+
+.deleteButton {
+	background-color: #963c4d;
+	color: black;
+}

@@ -1,7 +1,7 @@
 <?php
 	session_start();
 
-	if (isset($_POST['login'])) {	
+	if (isset($_POST['login'])) {
 		$name = htmlspecialchars(trim($_POST['name']));
 		$password = htmlspecialchars(trim($_POST['password']));
 
@@ -18,15 +18,17 @@
 
 <?php require(__DIR__ . "/../View/header/connect-app-header.php"); ?>
 
-<h3>Login</h3>
-<form action="login.php" method="POST">
-	<label>Name</label><br/>
-	<input type="text" name="name" maxlength="20" required/><br/><br/>
-	<label>Password</label><br/>
-	<input type="password" name="password" maxlength="20" required/><br/>
-	<?php if (isset($error)) {echo 
-	"<a href='passwordReset.php'>You forgot your password?</a><br/>";}?>
-	<br/>
-	<button type="submit" name="login">Login</button><br/><br/>
-	<?php if (isset($error)) {echo $error . "<br/>";} ?><br/>
-</form>
+<div class="centerForm">
+	<h1>Login</h1><br><br>
+	<form action="login.php" method="POST">
+		<label>Name:</label><br/>
+		<input type="text" name="name" maxlength="20" required/><br/><br/>
+		<label>Password:</label><br/>
+		<input type="password" name="password" maxlength="20" required/><br/>
+		<?php if (isset($error)) {echo
+		"<a href='passwordReset.php'>You forgot your password?</a><br/>";}?>
+		<br/>
+		<button type="submit" name="login">Login</button><br/><br/>
+		<?php if (isset($error)) {echo $error . "<br/>";} ?><br/>
+	</form>
+</div>
