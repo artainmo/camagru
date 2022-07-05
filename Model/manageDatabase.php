@@ -174,7 +174,7 @@ class ManageDatabase {
 
 	function getCommentsOfPicture($picture) {
 		return $this->execSqlParams("SELECT * FROM comments WHERE picture_id=? " .
-			"ORDER BY time ASC", [$picture]);
+			"ORDER BY time DESC", [$picture]);
 	}
 
 	function deleteComment($id) {

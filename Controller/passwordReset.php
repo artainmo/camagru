@@ -6,7 +6,7 @@ session_start();
 if (isset($_POST['nameSubmit'])) {
 	$name = htmlspecialchars(trim($_POST['nameInput']));
 
-	require(__DIR__ . "/../Model/manageDatabase.php");
+	require_once(__DIR__ . "/../Model/manageDatabase.php");
 	$db = new ManageDatabase;
 	$ret = $db->getAccount($name);
 	if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
@@ -35,20 +35,20 @@ if (isset($_SERVER['QUERY_STRING'])) {
     	echo "Not able to reset your password.";
     	exit();
 	}
-	require(__DIR__ . "/../Model/manageDatabase.php");
-    $db = new ManageDatabase;
-    $ret = $db->getAccount($query['name']);
-    if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
-			echo "Internal server error occured:<br/>" . $ret[1];
-			exit();
-    } elseif (count($ret) === 0) {
-			echo "Not able to reset your password.";
-			exit();
-		} else if ($ret[0]->email !== $query['email'] or $ret[0]->password !== $query['password']) {
-			echo "Not able to reset your password.";
-			exit();
-		} else {
-			$_SESSION['account'] = $query['name'];
+	require_once(__DIR__ . "/../Model/manageDatabase.php");
+  $db = new ManageDatabase;
+  $ret = $db->getAccount($query['name']);
+  if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
+		echo "Internal server error occured:<br/>" . $ret[1];
+		exit();
+  } elseif (count($ret) === 0) {
+		echo "Not able to reset your password.";
+		exit();
+	} else if ($ret[0]->email !== $query['email'] or $ret[0]->password !== $query['password']) {
+		echo "Not able to reset your password.";
+		exit();
+	} else {
+		$_SESSION['account'] = $query['name'];
 	}
 }
 
@@ -60,7 +60,7 @@ if (isset($_POST['newPasswordSubmit'])) {
     	$passwordAlert = "Password must have a minimal length of 5 characters,
                 contain at least one number and lower case character.";
     } else {
-		require(__DIR__ . "/../Model/manageDatabase.php");
+			require_once(__DIR__ . "/../Model/manageDatabase.php");
     	$db = new ManageDatabase;
     	$ret = $db->updateAccount($_SESSION['account'], "password", $password);
     	if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
@@ -82,7 +82,7 @@ if (isset($_POST['newPasswordSubmit'])) {
 		<?php if (isset($error)) {echo $error . "<br/>";} ?><br/>
 	</form>
 	<?php } else { ?>
-	<form action="passwordReset.php" method="POST">
+	<form action=<?=$_SERVER['REQUEST_URI']?> method="POST">
 		<label>New password:</label><br/>
 		<input type="password" name="newPasswordInput" maxlength="20" required/><br/>
 		<?php if (isset($passwordAlert)) {echo $passwordAlert . "<br/>";} ?><br/>

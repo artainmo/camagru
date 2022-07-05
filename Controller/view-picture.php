@@ -28,8 +28,9 @@
 			$db->deleteLike($_SESSION['account'], $query['picId']);
 		}
 	} elseif (isset($_POST['commentSubmit'])) {
+		$comment = htmlspecialchars(trim($_POST['commentInput']));
 		$db->createCommentAndSendNotification($_SESSION['account'],
-			$query['picId'], $_POST['commentInput']);
+			$query['picId'], $comment);
 		unset($_POST['commentSubmit']);
 		unset($_POST['commentInput']);
 	}
@@ -73,7 +74,7 @@
 
 	<div class="block3PictureInfo">
 		<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST">
-		    <input type="text" name="commentInput" required/>
+		    <input type="text" name="commentInput" maxlength="300" required/>
 		    <button type="submit" name="commentSubmit">comment</Button><br/>
 		</form>
 		<br>
