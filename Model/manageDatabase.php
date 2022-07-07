@@ -4,17 +4,17 @@ class ManageDatabase {
 	private $db;
 
 	function __construct() {
-		$DB_HOST = "localhost";
-		$DB_NAME = getenv("USER");
-		$DB_USER = getenv("USER");
-		$DB_PASSWORD = null;
+		$DB_HOST = "localhost"; //getenv('DB_HOST')
+		$DB_NAME = getenv("USER"); //getenv('DB_NAME')
+		$DB_USER = getenv("USER"); //getenv('DB_USER')
+		$DB_PASSWORD = //getenv('DB_PASSWORD')
 
 		$DB_OBJ_OPTIONS = [
-			PDO::ATTR_EMULATE_PREPARES   => false,
+			PDO::ATTR_EMULATE_PREPARES => false,
 			//turn on errors in the form of exceptions
-    		PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    	PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 			//make the default fetch be an anonymous object with column names as properties
-    		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+    	PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
 		];
 
 		//Connect to database

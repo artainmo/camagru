@@ -1,0 +1,29 @@
+version: '3'
+services:
+  postgres:
+    container_name: postgres
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_USER="arthurtainmont"
+      - POSTGRES_PASSWORD=""
+      - POSTGRES_DB="arthurtainmont"
+    ports:
+      - '5432:5432'
+    restart: always
+  camagru:
+    container_name: camagru_container
+    build: .
+    image: camagru_image
+    environment:
+      - DB_HOST="localhost"
+      - DB_NAME="arthurtainmont"
+      - DB_USER="arthurtainmont"
+      - DB_PASSWORD=null
+      - CRYPTING_PRIVATE_KEY="AA74CDCC2BBRT935136HH7B63C27"
+      - CRYPTING_SECRET_KEY="5fgf5HJ5g27"
+      - EMAIL_PASSWORD="$camagru123"
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - '8000:8000'

@@ -1,8 +1,8 @@
 <?php
 /*
  * Install PHPmailer with two following shell commands:
- 	* curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
- 	* composer require phpmailer/phpmailer
+ * curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+ * composer require phpmailer/phpmailer
  * If composer.json already exists, run in same directory as this file and composer.json 'composer install' and composer.lock and vendor will be created
  * Define PHPmailer with the following 3 'use' and 1 'require' statements
 */
@@ -19,14 +19,14 @@ function sendMail($toMail, $toName, $subject, $content) {
 	//$mail->SMTPDebug  = 1;
 
 	//hotmail is used because gmail and icloud do not accept application connection for security reasons
-	//hotmail can still block account due to suspicious activity, 
+	//hotmail can still block account due to suspicious activity,
 	//if this is the case you have to manually unblock it
 	$mail->Host = 'smtp-mail.outlook.com';
 	$mail->SMTPSecure = 'tls';
 	$mail->Port = 587;
 	$mail->SMTPAuth = true;
-	$mail->Username = 'camagru19@hotmail.com'; 
-	$mail->Password = '$camagru123';
+	$mail->Username = 'camagru19@hotmail.com';
+	$mail->Password = '$camagru123'; //getenv('EMAIL_PASSWORD')
 
 	$mail->AddAddress($toMail, $toName);
 	$mail->SetFrom("camagru19@hotmail.com", "Camagru");
