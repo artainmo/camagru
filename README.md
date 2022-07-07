@@ -15,6 +15,8 @@ From root write following command:
 php -S localhost:8000 -t Controller
 </pre>
 
+Launch postgres.app and start default server named after the user.
+
 Access the website in browser on address `http://localhost:8000`.
 
 #### Launch with docker-compose
