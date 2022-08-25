@@ -17,7 +17,7 @@ POSTGRES_PASSWORD=postgres
 EMAIL_PASSWORD= #My nickname all lowercase + 123$
 CRYPTING_PRIVATE_KEY=AA74CDCC2BBRT935136HH7B63C27
 CRYPTING_SECRET_KEY=5fgf5HJ5g27
-<pre>
+</pre>
 Usually the content of the .env file should not be given as it breaks the purpose of it. But in this case whereby camagru is an exercise I do not mind giving the codes besides the email password as it already got used by spammers when leaving it public.
 
 From root write following command:
