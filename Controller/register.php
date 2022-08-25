@@ -25,12 +25,14 @@
 				require(__DIR__ . "/utils/crypting.php");
 				$token = encrypt_decrypt("name=${name}&email=${email}&password=${password}");
 				require(__DIR__ . "/utils/sendmail.php");
-				sendMail($email, $name, "Verify Camagru Account",
+				$ret = sendMail($email, $name, "Verify Camagru Account",
 					"Click on the following button to verify your account: " .
 					"<button><a href=" .
 					"'http://localhost:8000/emailVerification.php?${token}'" .
 					">Verify</a></button>");
-				header("Location: http://localhost:8000/emailVerification.php");
+				if ($ret === "SUCCESS") {
+					header("Location: http://localhost:8000/emailVerification.php");
+				} else { echo "Error sending verification mail: " . $ret; }
 			}
 		}
 	}

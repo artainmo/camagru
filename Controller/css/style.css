@@ -1,6 +1,6 @@
 /*
-* Both the css and overlayImages are put in Controller while
-* they should be in the View because the php server is launched
+* Both the css and overlayImages are put in Controller, while
+* they should be in the View, because the php server is launched
 * from the Controller which cannot search files in directories behind itself
 *
 * Overall the MVC structure was not a success for this mainly php project

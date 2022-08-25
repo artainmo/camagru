@@ -8,29 +8,23 @@ structure - MVC (unclean see why in Controller/css/style.css)
 
 ### LAUNCH
 
-#### Launch without docker
-
-From root write following command:
+Write the .env file in same directory as docker-compose.yml file with this content:
 <pre>
-php -S localhost:8000 -t Controller
-</pre>
-
-Launch postgres.app and start default server named after the user.
-
-Access the website in browser on address `http://localhost:8000`.
-
-#### Launch with docker-compose
+POSTGRES_HOST=postgres
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+EMAIL_PASSWORD= #My nickname all lowercase + 123$
+CRYPTING_PRIVATE_KEY=AA74CDCC2BBRT935136HH7B63C27
+CRYPTING_SECRET_KEY=5fgf5HJ5g27
+<pre>
+Usually the content of the .env file should not be given as it breaks the purpose of it. But in this case whereby camagru is an exercise I do not mind giving the codes besides the email password as it already got used by spammers when leaving it public.
 
 From root write following command:
 <pre>
 docker-compose up
 </pre>
 
-*Docker does not work yet, here is the problem:<br>
-I can connect to website from within docker container with curl but not from browser outside the container.<br>
-**Everything I tried to get the address to connect from outside the container:<br>
-***Docker inspect -> docker inspect $MY_CONTAINER | grep IPAddress<br>
-***Docker-machine -> docker-machine ip default<br>
-***Reinstall docker through different methods and follow steps all over again<br>
-**Other solutions<br>
-***Try the whole process over on another computer<br>
+#### Bugs
+
+If error occurs when sending emails, it probably means the email address camagru19@hotmail.com got locked, to resolve the problem go unlock it by connecting on outlook to that email account.

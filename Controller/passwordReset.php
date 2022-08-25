@@ -17,12 +17,16 @@ if (isset($_POST['nameSubmit'])) {
 		require(__DIR__ . "/utils/crypting.php");
         $token = encrypt_decrypt("name=${name}&email={$ret[0]->email}&password={$ret[0]->password}");
 		require(__DIR__ . "/utils/sendmail.php");
-		sendMail($ret[0]->email, $name, "Reset Camagru Password",
+		$mailRet = sendMail($ret[0]->email, $name, "Reset Camagru Password",
 			"Click on the following button to reset your password: " .
 			"<button><a href=" .
 			"'http://localhost:8000/passwordReset.php?${token}'" .
 			">Verify</a></button>");
-		echo "<p class='title'>We send you an email to reset your password.</p>";
+		if ($mailRet !== 'SUCCESS') {
+			echo 'Error when sending mail: ' . $mailRet;
+		} else {
+			echo "<p class='title'>We send you an email to reset your password.</p>";
+		}
 		exit();
 	}
 }

@@ -3,8 +3,8 @@
 function encrypt_decrypt($string, $action = 'encrypt')
 {
     $encrypt_method = "AES-256-CBC";
-    $secret_key = 'AA74CDCC2BBRT935136HH7B63C27'; // user define private key // getenv('CRYPTING_PRIVATE_KEY')
-    $secret_iv = '5fgf5HJ5g27'; // user define secret key // getenv('CRYPTING_SECRET_KEY')
+    $secret_key = getenv('CRYPTING_PRIVATE_KEY'); // user define private key
+    $secret_iv = getenv('CRYPTING_SECRET_KEY'); // user define secret key
     $key = hash('sha256', $secret_key);
     $iv = substr(hash('sha256', $secret_iv), 0, 16); // sha256 is hash_hmac_algo
     if ($action == 'encrypt') {

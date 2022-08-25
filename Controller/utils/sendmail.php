@@ -26,7 +26,7 @@ function sendMail($toMail, $toName, $subject, $content) {
 	$mail->Port = 587;
 	$mail->SMTPAuth = true;
 	$mail->Username = 'camagru19@hotmail.com';
-	$mail->Password = '$camagru123'; //getenv('EMAIL_PASSWORD')
+	$mail->Password = getenv("EMAIL_PASSWORD");
 
 	$mail->AddAddress($toMail, $toName);
 	$mail->SetFrom("camagru19@hotmail.com", "Camagru");

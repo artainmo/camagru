@@ -4,10 +4,10 @@ class ManageDatabase {
 	private $db;
 
 	function __construct() {
-		$DB_HOST = "localhost"; //getenv('DB_HOST')
-		$DB_NAME = getenv("USER"); //getenv('DB_NAME')
-		$DB_USER = getenv("USER"); //getenv('DB_USER')
-		$DB_PASSWORD = //getenv('DB_PASSWORD')
+		$DB_HOST = getenv('POSTGRES_HOST');
+		$DB_NAME = getenv('POSTGRES_DB');
+		$DB_USER = getenv('POSTGRES_USER');
+		$DB_PASSWORD = getenv('POSTGRES_PASSWORD');
 
 		$DB_OBJ_OPTIONS = [
 			PDO::ATTR_EMULATE_PREPARES => false,
