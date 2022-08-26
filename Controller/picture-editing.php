@@ -99,6 +99,9 @@ function streamError(error) {
     errorMsg('Permissions have not been granted to use your camera' +
       ', you need to allow the page access to your camera in ' +
       'order to take pictures. Instead you can upload an image.');
+	} else if (error.name === "NotFoundError") {
+		errorMsg('No camera has been found on this device. ' +
+			'Instead you can upload an image.');
   } else {
   	errorMsg(`getUserMedia error: ${error.name}`, error);
   }
