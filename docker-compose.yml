@@ -12,6 +12,8 @@ services:
     build: .
     image: camagru_image
     env_file: .env
+    volumes:
+      - /var/www/View/public/pictures #Enables persistance of saved images after restarting the server
     ports:
       - 8000:8000
     restart: always

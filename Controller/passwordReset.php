@@ -1,5 +1,3 @@
-<?php require(__DIR__ . "/../View/header/base-header.html"); ?>
-
 <?php
 session_start();
 
@@ -23,8 +21,10 @@ if (isset($_POST['nameSubmit'])) {
 			"'http://localhost:8000/passwordReset.php?${token}'" .
 			">Verify</a></button>");
 		if ($mailRet !== 'SUCCESS') {
+			require(__DIR__ . "/../View/header/base-header.html");
 			echo 'Error when sending mail: ' . $mailRet;
 		} else {
+			require(__DIR__ . "/../View/header/base-header.html");
 			echo "<p class='title'>We send you an email to reset your password.</p>";
 		}
 		exit();
@@ -36,6 +36,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 	$decrypted_token = encrypt_decrypt($_SERVER['QUERY_STRING'], 'decrypt');
 	parse_str($decrypted_token, $query);
 	if (!isset($query["name"]) or !isset($query["email"]) or !isset($query["password"])) {
+			require(__DIR__ . "/../View/header/base-header.html");
     	echo "Not able to reset your password.";
     	exit();
 	}
@@ -43,12 +44,15 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $db = new ManageDatabase;
   $ret = $db->getAccount($query['name']);
   if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
+		require(__DIR__ . "/../View/header/base-header.html");
 		echo "Internal server error occured:<br/>" . $ret[1];
 		exit();
   } elseif (count($ret) === 0) {
+		require(__DIR__ . "/../View/header/base-header.html");
 		echo "Not able to reset your password.";
 		exit();
 	} else if ($ret[0]->email !== $query['email'] or $ret[0]->password !== $query['password']) {
+		require(__DIR__ . "/../View/header/base-header.html");
 		echo "Not able to reset your password.";
 		exit();
 	} else {
@@ -74,6 +78,8 @@ if (isset($_POST['newPasswordSubmit'])) {
 }
 
 ?>
+
+<?php require(__DIR__ . "/../View/header/base-header.html"); ?>
 
 <div class="centerForm">
 	<h1>Reset password</h1><br><br>

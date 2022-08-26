@@ -67,7 +67,7 @@ function displaySelectedPicture(input) {
 function takePicture(camera) {
 	const takePictureButton = document.getElementById('takePictureButton');
 
-	takePictureButton.addEventListener("submit", () => {
+	takePictureButton.addEventListener("submit", async () => {
   	let canvas = document.getElementById('takePictureCanvas');
 		let canvasContext = canvas.getContext('2d');
 		let overlayImg = new Image();
@@ -76,7 +76,7 @@ function takePicture(camera) {
 		const stream = document.querySelector('video');
 		const selectedImage = document.getElementById('selectedPictureDisplay');
 
-		imageProcessing(camera, canvas, canvasContext, overlayImg, stream, selectedImage);
+		await imageProcessing(camera, canvas, canvasContext, overlayImg, stream, selectedImage);
 	});
 }
 
@@ -111,15 +111,15 @@ async function init() {
     const stream = await navigator.mediaDevices.getUserMedia({video: true});
   	getPictureHTML.insertAdjacentHTML('afterbegin',
 		"<video width='320' height='240' autoplay></video><br>");
-	setupVideoStream(stream);
-	takePicture(true);
+		setupVideoStream(stream);
+		takePicture(true);
   } catch (error) {
-	getPictureHTML.insertAdjacentHTML('afterbegin',
-	"<p id='error' class='error'></p>" +
-	"<label><input type='file' name='selectedPicture' accept='image/*' " +
-	"onchange='displaySelectedPicture(this);'><br>Upload image<br></label>" +
-	"<br><img id='selectedPictureDisplay' width='320' height='240'/>");
-	streamError(error);
+		getPictureHTML.insertAdjacentHTML('afterbegin',
+			"<p id='error' class='error'></p>" +
+			"<label><input type='file' name='selectedPicture' accept='image/*' " +
+			"onchange='displaySelectedPicture(this);'><br>Upload image<br></label>" +
+			"<br><img id='selectedPictureDisplay' width='320' height='240'/>");
+		streamError(error);
   	takePicture(false);
   }
 }

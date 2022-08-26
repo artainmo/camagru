@@ -1,5 +1,5 @@
 <?php
-    session_start();
+  session_start();
 	if (!isset($_SESSION['account'])) { header('Location: http://localhost:8000/index.php'); }
     require(__DIR__ . "/../Model/manageDatabase.php");
     $db = new ManageDatabase;

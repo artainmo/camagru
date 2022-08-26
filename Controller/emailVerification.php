@@ -1,7 +1,7 @@
-<?php require(__DIR__ . "/../View/header/base-header.html"); ?>
-
 <?php
 session_start();
+
+require(__DIR__ . "/../View/header/base-header.html");
 
 if (!isset($_SERVER['QUERY_STRING'])) {
 	echo '<p class="title">We send you an email to verify your account.</p>';
