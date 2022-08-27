@@ -19,10 +19,10 @@
 <form id="takePictureButton" class="block2PictureEditing">
 	<p>Choose Overlay Image:</p>
 	<label><input type="radio" name="overlay" value="wine" required>Wine</label><br>
-	<label><input type="radio" name="overlay" value="christmas">Christmas</label><br>
-	<label><input type="radio" name="overlay" value="shovel">Shovel</label><br>
+	<label><input type="radio" name="overlay" value="boxes">Boxes</label><br>
+	<label><input type="radio" name="overlay" value="plumber">Plumber</label><br>
 	<label><input type="radio" name="overlay" value="hotdog">Hotdog</label><br>
-	<label><input type="radio" name="overlay" value="tree">Tree</label><br><br>
+	<label><input type="radio" name="overlay" value="shirt">Shirt</label><br><br>
 	<button type="submit">Take photo</button><br>
 </form>
 
@@ -48,7 +48,6 @@
 
 <?php require(__DIR__ . "/../View/footer/footer.html"); ?>
 
-<script src="image-processing.js"></script>
 <script>
 function displaySelectedPicture(input) {
   var selectedPictureDisplay = document.getElementById('selectedPictureDisplay');
@@ -67,16 +66,43 @@ function displaySelectedPicture(input) {
 function takePicture(camera) {
 	const takePictureButton = document.getElementById('takePictureButton');
 
-	takePictureButton.addEventListener("submit", () => {
+	takePictureButton.addEventListener("submit", async () => {
   	let canvas = document.getElementById('takePictureCanvas');
 		let canvasContext = canvas.getContext('2d');
 		let overlayImg = new Image();
 		selectedOverlayImage = document.querySelector('input[name="overlay"]:checked').value;
 		overlayImg.src = `overlayImages/${selectedOverlayImage}.png`;
-		const stream = document.querySelector('video');
-		const selectedImage = document.getElementById('selectedPictureDisplay');
 
-		imageProcessing(camera, canvas, canvasContext, overlayImg, stream, selectedImage);
+		if (camera) {
+			const stream = document.querySelector('video');
+	    canvasContext.drawImage(stream, 0, 0, canvas.width, canvas.height);
+	  } else {
+			const selectedImage = document.getElementById('selectedPictureDisplay');
+	    canvasContext.drawImage(selectedImage, 0, 0, canvas.width, canvas.height);
+	  }
+
+	  function createImg() {
+	    // console.log("IN");
+	    canvasContext.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
+	    let imageData = canvas.toDataURL('image/png');
+	    //Call php to create picture in database
+	    fetch("http://localhost:8000/picture-editing.php", {
+	      method: "POST",
+	      headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+	          body: `imageData=${imageData}`
+	    });
+	    alert('Image successfully loaded!'); //This creates a gain of time before the refresh, allowing the new picture to be present more often after refresh
+			window.location.reload();
+	  }
+
+	  if (overlayImg.complete) { //Certain images are already loaded but still need to go through createImg function
+	    // console.log(1);
+	    createImg();
+	  } else {
+	    // console.log(2);
+	    await new Promise((resolve) => { overlayImg.onload = resolve; });
+	    createImg();
+	  }
 	});
 }
 
