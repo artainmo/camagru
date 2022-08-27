@@ -1,4 +1,4 @@
-function imageProcessing(camera, canvas, canvasContext, overlayImg, stream, selectedImage) {
+async function imageProcessing(camera, canvas, canvasContext, overlayImg, stream, selectedImage) {
   if (camera) {
     canvasContext.drawImage(stream, 0, 0, canvas.width, canvas.height);
   } else {
@@ -6,6 +6,7 @@ function imageProcessing(camera, canvas, canvasContext, overlayImg, stream, sele
   }
 
   function createImg() {
+    console.log("IN");
     canvasContext.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
     let imageData = canvas.toDataURL('image/png');
     //Call php to create picture in database
@@ -22,7 +23,7 @@ function imageProcessing(camera, canvas, canvasContext, overlayImg, stream, sele
     createImg();
   } else {
     console.log(2);
-    overlayImg.addEventListener('load', createImg);
-    overlayImg.addEventListener('error', (e) => { alert('error image load!'); console.log(e); });
+    await new Promise((resolve) => { overlayImg.onload = resolve; });
+    createImg();
   }
 }
