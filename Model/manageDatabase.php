@@ -28,14 +28,17 @@ class ManageDatabase {
 		}
 
 		//Create database unless it already exists
-		$create_db_commands = file_get_contents(__DIR__ . "/designDatabase.sql");
-		try {
-			$this->db->exec($create_db_commands);
-			//echo "Database created\n";
-		} catch (PDOException $e) {
-			if (substr($e->getMessage(), 0, 15) === "SQLSTATE[42P07]") {
-				//echo "Database already exists\n";
-			} else { echo "Error creating database:\n" . $e->getMessage(); }
+		$tableExists = gettype($this->db->exec("SELECT count(*) FROM account")) == 'integer';
+		if (!$tableExists) {
+			$create_db_commands = file_get_contents(__DIR__ . "/designDatabase.sql");
+			try {
+				$this->db->exec($create_db_commands);
+				//echo "Database created\n";
+			} catch (PDOException $e) {
+				if (substr($e->getMessage(), 0, 15) === "SQLSTATE[42P07]") {
+					//echo "Database already exists\n";
+				} else { echo "Error creating database:\n" . $e->getMessage(); }
+			}
 		}
 	}
 
