@@ -67,16 +67,14 @@ function displaySelectedPicture(input) {
 function takePicture(camera) {
 	const takePictureButton = document.getElementById('takePictureButton');
 
-	takePictureButton.addEventListener("submit", async () => {
+	takePictureButton.addEventListener("submit", () => {
   	let canvas = document.getElementById('takePictureCanvas');
 		let canvasContext = canvas.getContext('2d');
-		let overlayImg = new Image();
 		selectedOverlayImage = document.querySelector('input[name="overlay"]:checked').value;
-		overlayImg.src = `overlayImages/${selectedOverlayImage}.png`
 		const stream = document.querySelector('video');
 		const selectedImage = document.getElementById('selectedPictureDisplay');
 
-		await imageProcessing(camera, canvas, canvasContext, overlayImg, stream, selectedImage);
+		imageProcessing(camera, canvas, canvasContext, selectedOverlayImage, stream, selectedImage);
 	});
 }
 
