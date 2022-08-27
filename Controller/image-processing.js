@@ -1,7 +1,4 @@
-function imageProcessing(camera, canvas, canvasContext, selectedOverlayImage, stream, selectedImage) {
-  let loaded = false;
-  let overlayImg = new Image();
-
+function imageProcessing(camera, canvas, canvasContext, overlayImg, stream, selectedImage) {
   if (camera) {
     canvasContext.drawImage(stream, 0, 0, canvas.width, canvas.height);
   } else {
@@ -9,7 +6,6 @@ function imageProcessing(camera, canvas, canvasContext, selectedOverlayImage, st
   }
 
   function createImg() {
-    if (loaded) { return ; } else { loaded = true; }
     canvasContext.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
     let imageData = canvas.toDataURL('image/png');
     //Call php to create picture in database
@@ -18,9 +14,15 @@ function imageProcessing(camera, canvas, canvasContext, selectedOverlayImage, st
       headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
           body: `imageData=${imageData}`
     });
+    alert('Image loaded!');
   }
 
-  overlayImg.addEventListener('load', createImg);
-  overlayImg.src = `overlayImages/${selectedOverlayImage}.png`;
-  if (overlayImg.complete) { createImg(); } //Certain images are already loaded but still need to go through createImg function
+  if (overlayImg.complete) { //Certain images are already loaded but still need to go through createImg function
+    console.log(1);
+    createImg();
+  } else {
+    console.log(2);
+    overlayImg.addEventListener('load', createImg);
+    overlayImg.addEventListener('error', (e) => { alert('error image load!'); console.log(e); });
+  }
 }
