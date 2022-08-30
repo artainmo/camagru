@@ -33,6 +33,8 @@ Pictures without overlay-image pdf contradiction:<br>
 correctif -> "You must be able to set none or multiple overlayImages"<br>
 subject -> "the button allowing to take the picture should be inactive (not clickable) as long as no superposable image has been selected"
 
+Explain composer use: See Controller/utils/sendmail.php
+
 #### Bugs
 
 If error occurs when sending emails, it probably means the email address camagru19@hotmail.com got locked, to resolve the problem go unlock it by connecting on outlook to that email account. After you unlocked the account, you may need to wait 5min before you can actually send emails again.
