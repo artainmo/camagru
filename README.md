@@ -26,7 +26,12 @@ docker-compose up
 </pre>
 
 #### Notes for evaluations
-Visualize the database and encrypted passwords from docker-compose: Access container terminal from docker app -> type 'psql -U postgres' to access the database with psql -> Do the following SQL command to visualize the account rows 'SELECT * FROM account;'
+Visualize the database and encrypted passwords from docker-compose: <br>
+Access container terminal from docker app -> type 'psql -U postgres' to access the database with psql -> Do the following SQL command to visualize the account rows 'SELECT * FROM account;'
+
+Pictures without overlay-image pdf contradiction:<br>
+correctif -> "You must be able to set none or multiple overlayImages"<br>
+subject -> "the button allowing to take the picture should be inactive (not clickable) as long as no superposable image has been selected"
 
 #### Bugs
 
