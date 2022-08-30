@@ -92,8 +92,8 @@ function takePicture(camera) {
 
 		var Promises = [];
 		for (const selectedOverlayImage of selectedOverlayImages.values()) {
-			console.log(selectedOverlayImage.value);
 			overlayImg.src = `overlayImages/${selectedOverlayImage.value}.png`;
+			console.log(selectedOverlayImage.value);
 			Promises.push(new Promise((resolve, reject) => {
 				if (overlayImg.complete) { //Certain images are already loaded but still need to go through createImg function
 					canvasContext.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
