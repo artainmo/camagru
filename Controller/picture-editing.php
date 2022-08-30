@@ -13,6 +13,10 @@
 <?php require(__DIR__ . "/../View/header/in-app-header.php"); ?>
 
 <h1 class="pageTitle">Create Picture</h1>
+<form method="get">
+    <input name="modeOfPicture" type="submit" value="webcam"/>
+		<input name="modeOfPicture" type="submit" value="upload"/>
+</form>
 <div class="wrapperPictureEditing">
 <div id="getPicture" class="block1PictureEditing"></div>
 <canvas id="takePictureCanvas" style="display:none;" width="320" height="240"></canvas>
@@ -29,10 +33,10 @@
 <div class="block3PictureEditing">
 <h3>Your Pictures</h3>
 <?php
-    require_once(__DIR__ . "/../Model/manageDatabase.php");
-    $db = new ManageDatabase;
-    $myPics = $db->getPicturesOfUser($_SESSION['account']);
-		$i = 0;
+  require_once(__DIR__ . "/../Model/manageDatabase.php");
+  $db = new ManageDatabase;
+  $myPics = $db->getPicturesOfUser($_SESSION['account']);
+	$i = 0;
 	foreach ($myPics as $pic) {
 		$i++;
 		echo "<img src='$pic->imageData' width='320' height='240' " .
@@ -135,22 +139,31 @@ function streamError(error) {
 
 async function init() {
   var getPictureHTML = document.getElementById('getPicture');
+	var modeOfPicture = (new URLSearchParams(document.location.search)).get('modeOfPicture');
 
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({video: true});
-  	getPictureHTML.insertAdjacentHTML('afterbegin',
-		"<video width='320' height='240' autoplay></video><br>");
-		setupVideoStream(stream);
-		takePicture(true);
-  } catch (error) {
+	if (modeOfPicture === null || modeOfPicture === "webcam") {
+	  try {
+	    const stream = await navigator.mediaDevices.getUserMedia({video: true});
+	  	getPictureHTML.insertAdjacentHTML('afterbegin',
+			"<video width='320' height='240' autoplay></video><br>");
+			setupVideoStream(stream);
+			takePicture(true);
+	  } catch (error) {
+			getPictureHTML.insertAdjacentHTML('afterbegin',
+				"<p id='error' class='error'></p>" +
+				"<label><input type='file' name='selectedPicture' accept='image/*' " +
+				"onchange='displaySelectedPicture(this);'><br>Upload image<br></label>" +
+				"<br><img id='selectedPictureDisplay' width='320' height='240'/>");
+			streamError(error);
+	  	takePicture(false);
+	  }
+	} else {
 		getPictureHTML.insertAdjacentHTML('afterbegin',
-			"<p id='error' class='error'></p>" +
 			"<label><input type='file' name='selectedPicture' accept='image/*' " +
 			"onchange='displaySelectedPicture(this);'><br>Upload image<br></label>" +
 			"<br><img id='selectedPictureDisplay' width='320' height='240'/>");
-		streamError(error);
-  	takePicture(false);
-  }
+		takePicture(false);
+	}
 }
 
 init();

@@ -59,6 +59,11 @@ label {
 		text-align: center;
 }
 
+.pageTitle {
+	margin: 15px 15px;
+	text-align: center;
+}
+
 .header {
 	background-color: #8da638;
 	padding: 15px 10px;
@@ -103,11 +108,6 @@ label {
 	background-color: #8da638;
   padding: 8px;
 	text-decoration: none;
-}
-
-.pageTitle {
-	margin: 15px 15px;
-	text-align: center;
 }
 
 .wrapperPictureEditing {
