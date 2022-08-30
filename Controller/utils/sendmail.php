@@ -1,5 +1,14 @@
 <?php
 /*
+* The built-in php mail function does not work on localhost server, thus external library is used.
+* https://stackoverflow.com/questions/24644436/php-mail-function-doesnt-complete-sending-of-e-mail
+* "Some Web hosting providers do not allow or enable the sending of emails through their servers.
+* The reasons for this may vary but if they have disabled the sending of mail you will need to use an alternative method
+* that uses a third party to send those emails for you."
+* https://stackoverflow.com/questions/15965376/how-to-configure-xampp-to-send-mail-from-localhost/18185233#18185233
+* "You can send mail from localhost with sendmail package"
+*/
+/*
  * Install PHPmailer with two following shell commands:
  * curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
  * composer require phpmailer/phpmailer
