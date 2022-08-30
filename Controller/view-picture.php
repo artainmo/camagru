@@ -89,14 +89,13 @@
 </div>
 
 <script>
-	function deletePicture(storagePath) {
+	async function deletePicture(storagePath) {
 		//Call php to delete picture
-		fetch("http://localhost:8000<?=$_SERVER['REQUEST_URI']?>", {
+		await fetch("http://localhost:8000<?=$_SERVER['REQUEST_URI']?>", {
 			method: "POST", //This should be delete but we use post instead because php can easily parse it
 			headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
 	    body: `storagePath=${storagePath}`
 	  });
-		window.location.reload();//Refresh the page to see new picture in picture list
 		window.location.href="/<?=$origin?>.php";
 	}
 </script>
