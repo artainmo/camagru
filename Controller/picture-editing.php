@@ -73,7 +73,6 @@ function takePicture(camera) {
 	takePictureButton.addEventListener("submit", () => {
   	let canvas = document.getElementById('takePictureCanvas');
 		let canvasContext = canvas.getContext('2d');
-		let overlayImg = new Image();
 		selectedOverlayImages = document.querySelectorAll('input[name="overlay"]:checked');
 		console.log(selectedOverlayImages);
 
@@ -92,23 +91,21 @@ function takePicture(camera) {
 
 		var Promises = [];
 		for (const selectedOverlayImage of selectedOverlayImages.values()) {
-			overlayImg.src = `overlayImages/${selectedOverlayImage.value}.png`;
-			console.log(selectedOverlayImage.value);
 			Promises.push(new Promise((resolve, reject) => {
-				if (overlayImg.complete) { //Certain images are already loaded but still need to go through createImg function
+				const overlayImg = new Image();
+				overlayImg.onerror = () => { console.log(`Image ${selectedImage.value} loading error`); reject(); };
+				overlayImg.onload = () => {
 					canvasContext.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
 					resolve();
-				} else {
-					overlayImg.onerror = reject;
-					overlayImg.onload = () => {
-						canvasContext.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
-						resolve();
-					};
-				}
+				};
+				overlayImg.src = `overlayImages/${selectedOverlayImage.value}.png`;
+				console.log(selectedOverlayImage.value);
 			}));
 		}
 
-		Promise.all(Promises).then(() => {
+		console.log("1");
+		var ret = Promise.all(Promises).then(() => {
+			console.log("IN");
 			let imageData = canvas.toDataURL('image/png');
 			fetch("http://localhost:8000/picture-editing.php", { //Call php to create picture in database
 				method: "POST",
@@ -118,6 +115,12 @@ function takePicture(camera) {
 			alert('Images successfully loaded!'); //This creates a gain of time before the refresh, allowing the new picture to be present more often after refresh
 			window.location.reload();
 		}).catch((error) => {console.log(error);});
+		console.log("2");
+		console.log(ret);
+		setTimeout(() => {
+  		console.log('the queue is now empty');
+  		console.log(ret);
+		});
 	});
 }
 

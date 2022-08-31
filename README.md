@@ -38,6 +38,3 @@ Explain composer use: See Controller/utils/sendmail.php
 #### Bugs
 
 If error occurs when sending emails, it probably means the email address camagru19@hotmail.com got locked, to resolve the problem go unlock it by connecting on outlook to that email account. After you unlocked the account, you may need to wait 5min before you can actually send emails again.
-
-Superposition of images sometimes fail when those are large for unknown reason. After research and asking on slack, it seems not to be my fault. I resolved the problem by only using overlay images of small size.
-(https://stackoverflow.com/questions/73506190/javascript-img-onload-sometimes-not-firing-the-bigger-the-image-the-least-lik)
