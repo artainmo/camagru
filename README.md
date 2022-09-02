@@ -38,3 +38,6 @@ Explain composer use: See Controller/utils/sendmail.php
 #### Bugs
 
 If error occurs when sending emails, it probably means the email address camagru19@hotmail.com got locked, to resolve the problem go unlock it by connecting on outlook to that email account. After you unlocked the account, you may need to wait 5min before you can actually send emails again.
+
+OverlayImages do not function on Firefox for unknown reason.<br>
+(https://stackoverflow.com/questions/73555970/javascript-img-onload-not-firing-and-or-promises-always-pending-on-firefox-but)
