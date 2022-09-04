@@ -25,6 +25,11 @@ From root write following command:
 docker-compose up
 </pre>
 
+If wanting to update container with new code before launching:
+<pre>
+docker-compose build && docker-compose up
+</pre>
+
 #### Notes for evaluations
 Visualize the database and encrypted passwords from docker-compose: <br>
 Access container terminal from docker app -> type 'psql -U postgres' to access the database with psql -> Do the following SQL command to visualize the account rows 'SELECT * FROM account;'
@@ -38,6 +43,3 @@ Explain composer use: See Controller/utils/sendmail.php
 #### Bugs
 
 If error occurs when sending emails, it probably means the email address camagru19@hotmail.com got locked, to resolve the problem go unlock it by connecting on outlook to that email account. After you unlocked the account, you may need to wait 5min before you can actually send emails again.
-
-OverlayImages do not function on Firefox for unknown reason.<br>
-(https://stackoverflow.com/questions/73555970/javascript-img-onload-not-firing-and-or-promises-always-pending-on-firefox-but)
