@@ -11,7 +11,7 @@
 			$emailAlert = "Not a valid email.";
 		} elseif (!preg_match('~[0-9]+~', $password) || !preg_match('~[a-z]+~', $password)
 			|| strlen($password) < 5) {
-			$passwordAlert = "Password must have a minimal length of 5 characters,
+			$passwordAlert = "Password must have a minimal length of 5 characters,<br/>
 				contain at least one number and lower case character.";
 		} else {
 			require(__DIR__ . "/../Model/manageDatabase.php");

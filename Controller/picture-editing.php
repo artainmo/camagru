@@ -50,11 +50,11 @@
 <?php require(__DIR__ . "/../View/header/in-app-header.php"); ?>
 
 <h1 class="pageTitle">Create Picture</h1>
-<form method="get">
-    <input name="modeOfPicture" type="submit" value="webcam"/>
-		<input name="modeOfPicture" type="submit" value="upload"/>
-</form>
 <div class="wrapperPictureEditing">
+<form method="get">
+    <input name="modeOfPicture" type="submit" value="webcam" class="inputIsButton"/>
+		<input name="modeOfPicture" type="submit" value="upload" class="inputIsButton"/>
+</form>
 <div id="getPicture" class="block1PictureEditing"></div>
 <canvas id="takePictureCanvas" style="display:none;" width="320" height="240"></canvas>
 <form id="takePictureButton" class="block2PictureEditing">
@@ -64,7 +64,7 @@
 	<label><input type="checkbox" name="overlay" value="plumber"> Plumber</label><br>
 	<label><input type="checkbox" name="overlay" value="hotdog"> Hotdog</label><br>
 	<label><input type="checkbox" name="overlay" value="shirt"> Shirt</label><br><br>
-	<button type="submit">Take photo</button><br>
+	<button type="submit">Take photo</button><br><br>
 </form>
 
 <div class="block3PictureEditing">

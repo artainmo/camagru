@@ -87,11 +87,8 @@ label {
 }
 
 .centerForm {
-		position: fixed;
-  	top: 40%;
-  	left: 50%;
-  	transform: translate(-50%, -50%);
 		text-align: center;
+		margin-top: 50px;
 }
 
 .footer {
@@ -111,7 +108,9 @@ label {
 }
 
 .wrapperPictureEditing {
-		margin: 60px 40px;
+		display: inline-block;
+		margin: 40px 27px;
+		margin-bottom: 80px;
 }
 
 .block1PictureEditing {
@@ -125,12 +124,19 @@ label {
 }
 
 .block3PictureEditing {
-	float: right;
 	text-align: center;
-	border: 4px ridge #8da638;
-	height: 600px;
-	width: 700px;
+	height: 750px;
+	width: 320px;
 	overflow: scroll;
+}
+
+@media (min-width: 995px) {
+	.block3PictureEditing {
+		border: 4px ridge #8da638;
+		width: 380px;
+		float: right;
+		margin-left: 50px;
+	}
 }
 
 .block3PictureEditing h3 {
@@ -138,7 +144,7 @@ label {
 }
 
 .galleryPicsDisplay {
-	margin: 20px 40px;
+	margin: 20px 0px;
 	text-align: center;
 }
 
@@ -147,7 +153,7 @@ label {
 }
 
 .wrapperPictureInfo {
-		margin: 60px 40px;
+		margin: 60px 27px;
 }
 
 .block1PictureInfo {
@@ -156,11 +162,15 @@ label {
 }
 
 .block3PictureInfo {
-	float: left;
-	padding-left: 50px;
 	overflow: scroll;
 	width: 320px;
 	height: 600px;
+}
+
+@media (min-width: 770px) {
+	.block3PictureInfo {
+		padding-left: 50px;
+	}
 }
 
 .block1Like {
@@ -183,4 +193,8 @@ label {
 	color: black;
 	padding: 5px;
 	margin-right: 10px;
+}
+
+.inputIsButton {
+	background-color: #8da638;
 }

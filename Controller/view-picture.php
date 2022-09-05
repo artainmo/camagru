@@ -67,7 +67,8 @@
 		<?php
 			if ($pic->account_id === $_SESSION['account']) {
 				echo "<button class='deleteButton' " .
-					"onClick='deletePicture(`$pic->storagepath`)'>Delete</button><br>";
+					"onClick='deletePicture(`$pic->storagepath`)'>Delete</button>" .
+					"<br><br>";
 			}
 		?>
 	</div>
@@ -85,7 +86,7 @@
 						<small>$comment->time</small><br></p>";
 		    	}
 			?>
-	<div>
+	</div>
 </div>
 
 <script>

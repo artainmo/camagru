@@ -9,11 +9,11 @@
 * "You can send mail from localhost with sendmail package"
 */
 /*
- * Install PHPmailer with two following shell commands:
- * curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
- * composer require phpmailer/phpmailer
- * If composer.json already exists, run in same directory as this file and composer.json 'composer install' and composer.lock and vendor will be created
- * Define PHPmailer with the following 3 'use' and 1 'require' statements
+* Install PHPmailer with two following shell commands:
+* curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+* composer require phpmailer/phpmailer
+* If composer.json already exists, run in same directory as this file and composer.json 'composer install' and composer.lock and vendor will be created
+* Define PHPmailer with the following 3 'use' and 1 'require' statements
 */
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
