@@ -27,18 +27,14 @@ class ManageDatabase {
 			exit();
 		}
 
-		//Create database unless it already exists
-		$tableExists = gettype($this->db->exec("SELECT count(*) FROM account")) == 'integer';
-		if (!$tableExists) {
-			$create_db_commands = file_get_contents(__DIR__ . "/designDatabase.sql");
-			try {
-				$this->db->exec($create_db_commands);
-				//echo "Database created\n";
-			} catch (PDOException $e) {
-				if (substr($e->getMessage(), 0, 15) === "SQLSTATE[42P07]") {
-					//echo "Database already exists\n";
-				} else { echo "Error creating database:\n" . $e->getMessage(); }
-			}
+		$create_db_commands = file_get_contents(__DIR__ . "/designDatabase.sql");
+		try {
+			$this->db->exec($create_db_commands);
+			//echo "Database created\n";
+		} catch (PDOException $e) {
+			if (substr($e->getMessage(), 0, 15) === "SQLSTATE[42P07]") {
+				//echo "Database already exists\n";
+			} else { echo "Error creating database:\n" . $e->getMessage(); }
 		}
 	}
 
@@ -59,32 +55,36 @@ class ManageDatabase {
 	}
 
 	function verifyPasswordAccount($username, $passwordTry) {
-		$user = $this->getAccount($username);
+		$user = $this->getAccountByName($username);
 		if (count($user) === 0) { return false; }
 		return password_verify($passwordTry, $user[0]->password);
 	}
 
-	function getAccount($username) {
+	function getAccountByName($username) {
 		return $this->execSqlParams("SELECT * FROM account WHERE username=?", [$username]);
 	}
 
-	function updateAccount($username, $columnToUpdate, $newValue) {
+	function getAccount($user_id) {
+		return $this->execSqlParams("SELECT * FROM account WHERE id=?", [$user_id]);
+	}
+
+	function updateAccount($user_id, $columnToUpdate, $newValue) {
 		if ($columnToUpdate === "password") {
 			$newValue = password_hash($newValue, PASSWORD_DEFAULT);
 		}
 		return $this->execSqlParams("UPDATE account SET ${columnToUpdate} = ?
-          WHERE username = ?;", [$newValue, $username]);
+          WHERE id = ?;", [$newValue, $user_id]);
 	}
 
 	function deleteAccount($username) {
 		return $this->execSqlParams("DELETE FROM account WHERE username=?", [$username]);
 	}
 
-	function createPicture($imagePNGData, $username) {
+	function createPicture($imagePNGData, $user_id) {
 		$storagePath = __DIR__ . "/../View/public/pictures/" . uniqid(rand(), true) . '.png';
 		$creationTime = date('Y-m-d H:i:s');
 		$ret = $this->execSqlParams("INSERT INTO pictures (storagePath, creationTime, account_id)" .
-			"VALUES (?, ?, ?)", [$storagePath, $creationTime, $username]);
+			"VALUES (?, ?, ?)", [$storagePath, $creationTime, $user_id]);
 		if (!isset($ret[0]) or $ret[0] !== false) {
 			file_put_contents($storagePath, $imagePNGData);
 		}
@@ -102,10 +102,10 @@ class ManageDatabase {
 		return $ret;
 	}
 
-	function getPicturesOfUser($username) {
+	function getPicturesOfUser($user_id) {
 		$i = 0;
 		$ret = $this->execSqlParams("SELECT * FROM pictures WHERE account_id=? " .
-			"ORDER BY creationTime DESC", [$username]);
+			"ORDER BY creationTime DESC", [$user_id]);
 
 		while (count($ret) > $i) {
 			$ret[$i]->imageData = file_get_contents($ret[$i]->storagepath);
@@ -130,14 +130,14 @@ class ManageDatabase {
 		return $ret;
 	}
 
-	function createLike($liker, $picture) {
+	function createLike($liker_id, $picture) {
 		return $this->execSqlParams("INSERT INTO likes (liker_id, picture_id, time) VALUES (?, ?, ?)",
-									[$liker, $picture, date('Y-m-d H:i:s')]);
+									[$liker_id, $picture, date('Y-m-d H:i:s')]);
 	}
 
-	function getILiked($liker, $picture) {
+	function getILiked($liker_id, $picture) {
 		$ret = $this->execSqlParams("SELECT * FROM likes WHERE liker_id=? AND picture_id=?"
-			, [$liker, $picture]);
+			, [$liker_id, $picture]);
 		if (isset($ret[0]) and $ret[0] === false) { return false; }
 		return (count($ret) === 0) ? false : true;
 	}
@@ -146,17 +146,17 @@ class ManageDatabase {
 		return $this->execSqlParams("SELECT * FROM likes WHERE picture_id=?", [$picture]);
 	}
 
-	function deleteLike($liker, $picture) {
-		return $this->execSqlParams("DELETE FROM likes WHERE liker_id=? AND picture_id=?", [$liker, $picture]);
+	function deleteLike($liker_id, $picture) {
+		return $this->execSqlParams("DELETE FROM likes WHERE liker_id=? AND picture_id=?", [$liker_id, $picture]);
 	}
 
 	function deleteLikesOfPicture($picId) {
 		return $this->execSqlParams("DELETE FROM likes WHERE picture_id=?", [$picId]);
 	}
 
-	function createCommentAndSendNotification($commenter, $picture, $content) {
+	function createCommentAndSendNotification($commenter_id, $picture, $content) {
 		$ret = $this->execSqlParams("INSERT INTO comments (commenter_id, picture_id, content, time)
-					VALUES (?, ?, ?, ?)", [$commenter, $picture, $content, date('Y-m-d H:i:s')]);
+					VALUES (?, ?, ?, ?)", [$commenter_id, $picture, $content, date('Y-m-d H:i:s')]);
 		if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
 			return $ret;
 		}
@@ -164,10 +164,11 @@ class ManageDatabase {
 		$AccountOfPicture = $this->getAccount($AccountOfPicture);
 		if ($AccountOfPicture[0]->picture_comment_email_notification === false) { return $ret; }
 		require(__DIR__ . "/../Controller/utils/sendmail.php");
-		$picture = substr($picture, strrpos($picture, '/') - strlen($picture) + 1);
+		// $picture = substr($picture, strrpos($picture, '/') - strlen($picture) + 1);
 		sendMail($AccountOfPicture[0]->email, $AccountOfPicture[0]->username,
-			"New Comment On Picture", "The following comment was made by ${commenter} " .
-			"on one of your pictures.<br><br>Comment:<br>${content}<br><br>");
+			"New Comment On Picture", "The following comment was made by " .
+			$this->getAccount($commenter_id)[0]->username .
+			" on one of your pictures.<br><br>Comment:<br>${content}<br><br>");
 			//"Click on the following button to see the new comment: " .
             //"<button><a href=" .
 			//"'http://localhost:8000/view-picture.php?picId=${picture}'" . The link does not work because user first has to connect

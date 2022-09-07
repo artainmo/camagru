@@ -50,7 +50,7 @@
 <h1 class="pageTitle">Picture</h1>
 <div class="wrapperPictureInfo">
 	<div class="block1PictureInfo">
-		<p>Author: <?= $pic->account_id ?></p><br>
+		<p>Author: <?= $db->getAccount($pic->account_id)[0]->username ?></p><br>
 		<p>Creation time: <?= $pic->creationtime ?></p><br>
 		<img src='<?= $pic->imageData ?>' width='320' height='240'>
 		<br><br>
@@ -81,9 +81,11 @@
 		<br>
 			<?php
 				foreach ($picComments as $comment) {
-					echo "<p class='comment'><strong>$comment->commenter_id:</strong>" .
-					"<br>$comment->content<br>
-						<small>$comment->time</small><br></p>";
+					echo "<p class='comment'><strong>" .
+							$db->getAccount($comment->commenter_id)[0]->username .
+							":</strong>" .
+							"<br>$comment->content<br>
+							<small>$comment->time</small><br></p>";
 		    	}
 			?>
 	</div>

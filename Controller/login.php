@@ -10,7 +10,8 @@
 		if (!$db->verifyPasswordAccount($name, $password)) {
 			$error = "Wrong name or password.";
 		} else {
-			$_SESSION['account'] = $name;
+			$account = $db->getAccountByName($name)[0];
+			$_SESSION['account'] = $account->id;
 			header('Location: http://localhost:8000/gallery.php');
 		}
 	}

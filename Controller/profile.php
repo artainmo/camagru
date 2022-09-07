@@ -12,7 +12,7 @@
         	if (substr($ret[1], 0, 15) === "SQLSTATE[23505]") {
 		    	$nameAlert = "Name already in use.";
 			} else { $error = "Internal server error occured:<br/>" . $ret[1]; }
-		} else { $_SESSION['account'] = $name; }
+		}
 	} elseif (isset($_POST['emailSubmit'])) {
 		$email = htmlspecialchars(trim($_POST['emailInput']));
 		$email = filter_var($email, FILTER_SANITIZE_EMAIL);

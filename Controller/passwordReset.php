@@ -6,7 +6,7 @@ if (isset($_POST['nameSubmit'])) {
 
 	require_once(__DIR__ . "/../Model/manageDatabase.php");
 	$db = new ManageDatabase;
-	$ret = $db->getAccount($name);
+	$ret = $db->getAccountByName($name);
 	if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
 		$error = "Internal server error occured:<br/>" . $ret[1];
 	} elseif (count($ret) === 0) {
@@ -56,7 +56,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 		echo "Not able to reset your password.";
 		exit();
 	} else {
-		$_SESSION['account'] = $query['name'];
+		$_SESSION['account'] = $ret[0]->id;
 	}
 }
 
@@ -80,6 +80,10 @@ if (isset($_POST['newPasswordSubmit'])) {
 ?>
 
 <?php require(__DIR__ . "/../View/header/base-header.html"); ?>
+
+<button class="backButton" onClick="window.location.href='/login.php'">
+	Back
+</button>
 
 <div class="centerForm">
 	<h1>Reset password</h1><br><br>

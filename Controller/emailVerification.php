@@ -24,7 +24,8 @@ if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
 		"Click <a href='http://localhost:8000/register.php'>here</a> to try again.";
 	exit();
 }
-$_SESSION['account'] = $query['name'];
+$account = $db->getAccountByName($query['name'])[0];
+$_SESSION['account'] = $account->id;
 echo "<div class='title'>" .
 			"<p>Email verified successfully!</p><br>" .
 			"<button onclick='window.location.href=" .

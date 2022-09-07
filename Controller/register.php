@@ -16,7 +16,7 @@
 		} else {
 			require(__DIR__ . "/../Model/manageDatabase.php");
 			$db = new ManageDatabase;
-			$ret = $db->getAccount($name);
+			$ret = $db->getAccountByName($name);
 			if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
 				$error = "Internal server error occured:<br/>" . $ret[1];
 			} elseif (count($ret) !== 0) {
