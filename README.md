@@ -30,6 +30,8 @@ If wanting to update container with new code before launching:
 docker-compose build && docker-compose up
 </pre>
 
+Once launched go in browser to localhost:8000.
+
 #### Notes for evaluations
 Visualize the database and encrypted passwords from docker-compose: <br>
 Access container terminal from docker app -> type 'psql -U postgres' to access the database with psql -> Do the following SQL command to visualize the account rows 'SELECT * FROM account;'
