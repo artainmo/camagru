@@ -7,12 +7,15 @@
     if (isset($_POST['nameSubmit'])) {
 		$name = htmlspecialchars(trim($_POST['nameInput']));
 
-		$ret = $db->updateAccount($_SESSION['account'], "username", $name);
-		if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
+    $ret = $db->getAccountByName($name);
+    if (count($ret) !== 0) { $nameAlert = "Name already in use."; } else {
+		    $ret = $db->updateAccount($_SESSION['account'], "username", $name);
+		    if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
         	if (substr($ret[1], 0, 15) === "SQLSTATE[23505]") {
 		    	$nameAlert = "Name already in use.";
-			} else { $error = "Internal server error occured:<br/>" . $ret[1]; }
-		}
+			    } else { $error = "Internal server error occured:<br/>" . $ret[1]; }
+		    }
+    }
 	} elseif (isset($_POST['emailSubmit'])) {
 		$email = htmlspecialchars(trim($_POST['emailInput']));
 		$email = filter_var($email, FILTER_SANITIZE_EMAIL);

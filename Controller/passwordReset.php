@@ -42,7 +42,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 	}
 	require_once(__DIR__ . "/../Model/manageDatabase.php");
   $db = new ManageDatabase;
-  $ret = $db->getAccount($query['name']);
+  $ret = $db->getAccountByName($query['name']);
   if (isset($ret[0]) && gettype($ret[0]) === "boolean" && $ret[0] === false) {
 		require(__DIR__ . "/../View/header/base-header.html");
 		echo "Internal server error occured:<br/>" . $ret[1];

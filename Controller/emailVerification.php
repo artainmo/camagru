@@ -18,6 +18,8 @@ if (!isset($query["name"]) or !isset($query["email"]) or !isset($query["password
 
 require(__DIR__ . "/../Model/manageDatabase.php");
 $db = new ManageDatabase;
+$ret = $db->getAccountByName($query['name']);
+if (count($ret) !== 0) { exit(); }
 $ret = $db->createAccount($query['name'], $query['password'], $query['email']);
 if (gettype($ret[0]) === "boolean" && $ret[0] === false) {
 	echo "Problem occured while creating your account.<br>" .
