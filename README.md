@@ -3,12 +3,12 @@
 
 In this project we have to write a primitive instagram.
 
-### STACK
+### Stack
 Server-side - PHP, PostgreSQL<br>
 Client-side - HTML, CSS, Javascript<br>
 structure - MVC (unclean see why in Controller/css/style.css)
 
-### LAUNCH
+### Launch
 
 Write the .env file in same directory as docker-compose.yml file with this content:
 <pre>
@@ -34,7 +34,7 @@ docker-compose build && docker-compose up
 
 Once launched go in browser to localhost:8000.
 
-#### Notes for evaluations
+### Notes for evaluations
 Visualize the database and encrypted passwords from docker-compose: <br>
 Access container terminal from docker app -> type 'psql -U postgres' to access the database with psql -> Do the following SQL command to visualize the account rows 'SELECT * FROM account;'
 
@@ -44,6 +44,6 @@ subject -> "the button allowing to take the picture should be inactive (not clic
 
 Explain composer use: See Controller/utils/sendmail.php
 
-#### Bugs
+### Bugs
 
 If error occurs when sending emails, it probably means the email address camagru19@hotmail.com got locked, to resolve the problem go unlock it by connecting on outlook to that email account. After you unlocked the account, you may need to wait 5min before you can actually send emails again.
