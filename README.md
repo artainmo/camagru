@@ -4,7 +4,7 @@
 In this project we have to write a primitive instagram.
 
 ### STACK
-Server-side - PHP<br>
+Server-side - PHP, PostgreSQL<br>
 Client-side - HTML, CSS, Javascript<br>
 structure - MVC (unclean see why in Controller/css/style.css)
 
