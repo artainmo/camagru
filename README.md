@@ -1,5 +1,7 @@
 # camagru
-https://cdn.intra.42.fr/pdf/pdf/52596/en.subject.pdf
+42 school [subject](https://cdn.intra.42.fr/pdf/pdf/72690/en.subject.pdf).
+
+In this project we have to write a primitive instagram.
 
 ### STACK
 Server-side - PHP<br>
